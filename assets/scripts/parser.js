@@ -77,8 +77,8 @@ async function parse(string) {
                 "<span class='jetbrains red'>" + text + "</span><br />");
             break;}
         case "clear": {
-            document.querySelectorAll("#cli-container br").forEach(element => element.remove());
-            document.querySelectorAll("#cli-container span").forEach(element => element.remove());
+            document.querySelectorAll("#cli-container > br").forEach(element => element.remove());
+            document.querySelectorAll("#cli-container > span").forEach(element => element.remove());
             break;}
         default:
             cliContainer.insertAdjacentHTML("beforeend",
