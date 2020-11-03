@@ -1,0 +1,9 @@
+{
+  "commands": [
+    "xpple . . . . . . : Say hi!",
+    "ip. . . . . . . . : Get your ip",
+    "help. . . . . . . : Show a list of commands",
+	"ping. . . . . . . : Get your ping to the server",
+	"clear . . . . . . : Clear out the screen"
+  ]
+}

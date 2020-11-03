@@ -1,0 +1,49 @@
+body, html {
+	margin: 0px;
+	padding: 0px;
+}
+html {
+	background: url(../images/moon_4k.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.jetbrains {
+	font-family: JetBrainsMono-Regular, monospace;
+}
+.large {
+	font-size: 100px;
+}
+.red {
+	color: rgb(255, 0, 0);
+}
+.white {
+	color: rgb(255, 255, 255);
+}
+::-webkit-scrollbar {
+	display: none;
+}
+#container {
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+#cli-container {
+	height: 100vh;
+	overflow: auto;
+}
+#cli-container *::selection {
+	background: white;
+}
+#cli-container *::-moz-selection {
+	background: white;
+}
+#cli-container *:hover {
+	cursor: default;
+}
+#cli-container div {
+	display: flex;
+}
+#cli-container div input {
+	flex-grow: 1;
+}
