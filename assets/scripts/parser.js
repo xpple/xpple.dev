@@ -50,10 +50,10 @@ async function parse(string) {
             cliContainer.insertAdjacentHTML("beforeend",
                 "<span class='jetbrains red'>" + text + "</span><br />");
             break;}
-        case "xpple":
+        case "xpple": {
             cliContainer.insertAdjacentHTML("beforeend",
                 "<span class='jetbrains red'>Hey!</span><br />");
-            break;
+            break;}
         case "help": {
             const response = await fetch("https://xpple.dev/assets/data/list.json");
 
@@ -80,13 +80,17 @@ async function parse(string) {
             document.querySelectorAll("#cli-container > br").forEach(element => element.remove());
             document.querySelectorAll("#cli-container > span").forEach(element => element.remove());
             break;}
-        default:
+        case "sudoku": {
+            cliContainer.insertAdjacentHTML("beforeend",
+                "<span class='jetbrains red'>Coming soon!</span><br />");
+            break;}
+        default: {
             cliContainer.insertAdjacentHTML("beforeend",
                 "<span class='jetbrains red'>" + string.value + " : The term '" + string.value +
                 "' is not recognized as the name of a cmdlet, function, script file, or operable program. " +
                 "Check the spelling of the name, or if a path was included that the path is correct " +
                 "and try again.</span><br />");
-            break;
+            break;}
     }
     history.push(string.value);
 }
