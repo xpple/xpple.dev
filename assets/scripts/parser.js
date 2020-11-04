@@ -74,7 +74,7 @@ async function parse(string) {
             const text = await response.text();
 
             cliContainer.insertAdjacentHTML("beforeend",
-                "<span class='jetbrains red'>" + text + "</span><br />");
+                "<span class='jetbrains red'>" + text + " ms</span><br />");
             break;}
         case "clear": {
             document.querySelectorAll("#cli-container > br").forEach(element => element.remove());
