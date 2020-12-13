@@ -4,6 +4,8 @@
     "ip. . . . . . . . : Get your ip",
     "help. . . . . . . : Show a list of commands",
 	"ping. . . . . . . : Get your ping to the server",
-	"clear . . . . . . : Clear out the screen"
+	"clear . . . . . . : Clear out the screen",
+    "sudoku. . . . . . : Solve a sudoku",
+    "settings. . . . . : Change your settings"
   ]
 }

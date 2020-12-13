@@ -7,7 +7,10 @@ let inputField = document.querySelector(".input");
 let history = [];
 let n = 0;
 
-inputField.addEventListener('keydown', async(e) => {
+let colour = "red";
+let user = "xpple";
+
+cliInputContainer.addEventListener('keydown', async(e) => {
     if (e.key === "Enter" && e.shiftKey === false && inputField.value !== "") {
         const input = inputField;
         solidify(input);
@@ -33,7 +36,7 @@ inputField.addEventListener('keydown', async(e) => {
 
 function solidify(element) {
     cliContainer.insertAdjacentHTML("beforeend",
-        "<span class='jetbrains red'>PS C:\\Users\\xpple>&nbsp</span><span class='jetbrains white'>" + element.value + "</span><br />");
+        "<span class='jetbrains red'>PS C:\\Users\\" + user + ">&nbsp;</span><span class='jetbrains white'>" + sanitizeHTML(element.value) + "</span><br />");
 }
 
 async function parse(string) {
@@ -47,22 +50,31 @@ async function parse(string) {
 
             const text = await response.text();
 
-            cliContainer.insertAdjacentHTML("beforeend",
-                "<span class='jetbrains red'>" + text + "</span><br />");
+            insertHTML("beforeend", "jetbrains " + colour, text);
             break;}
         case "xpple": {
-            cliContainer.insertAdjacentHTML("beforeend",
-                "<span class='jetbrains red'>Hey!</span><br />");
+            insertHTML("beforeend", "jetbrains " + colour, "Hey!");
             break;}
         case "help": {
-            const response = await fetch("https://xpple.dev/assets/data/list.json");
+            switch (string.value.split(" ")[1]) {
+                case "help1": {
+                    //
+                    break;}
+                case "help2": {
+                    //
+                    break;}
+                default: {
+                    insertHTML("beforeend", "jetbrains " + colour, "List of commands:");
+                    const response = await fetch("https://xpple.dev/assets/data/list.json");
 
-            if (!response.ok) return;
+                    if (!response.ok) return;
 
-            const json = await response.json();
+                    const json = await response.json();
 
-            json.commands.forEach(element => cliContainer.insertAdjacentHTML("beforeend",
-                "<span class='jetbrains red'>" + element + "</span><br />"));
+                    json.commands.forEach(element => insertHTML("beforeend", "jetbrains " + colour, element));
+                    insertHTML("beforeend", "jetbrains " + colour, "To get help for any cmdlet or function, type: help command_name");
+                }
+            }
             break;}
         case "ping": {
             const response = await fetch("utils.php?ping");
@@ -73,23 +85,57 @@ async function parse(string) {
 
             const text = await response.text();
 
-            cliContainer.insertAdjacentHTML("beforeend",
-                "<span class='jetbrains red'>" + text + " ms</span><br />");
+            insertHTML("beforeend", "jetbrains " + colour, text + " ms");
             break;}
         case "clear": {
             document.querySelectorAll("#cli-container > br").forEach(element => element.remove());
             document.querySelectorAll("#cli-container > span").forEach(element => element.remove());
             break;}
         case "sudoku": {
-            cliContainer.insertAdjacentHTML("beforeend",
-                "<span class='jetbrains red'>Coming soon!</span><br />");
+            insertHTML("beforeend", "jetbrains " + colour, "Coming soon!")
+            break;}
+        case "settings": {
+            switch (string.value.split(" ")[1]) {
+                case "colour": {
+                    switch (string.value.split(" ")[2]) {
+                        case "red" : {
+                            colour = "red";
+                            break;}
+                        case "blue" : {
+                            colour = "blue";
+                            break;}
+                        case "white" : {
+                            colour = "white";
+                            break;}
+                        case "black" : {
+                            colour = "black";
+                            break;}
+                        default: {
+                            insertHTML("beforeend", "jetbrains " + colour,
+                                "Error: unrecognized or incomplete command line.");
+                            break;}
+                    }
+                    break;}
+                case "user": {
+                    if (string.value.split(" ")[2] !== undefined && string.value.split(" ")[2].trim()) {
+                        user = string.value.split(" ")[2];
+                        document.querySelector("#cli-input-container > span").innerHTML = "PS C:\\Users\\" + user + ">&nbsp;";
+                    }
+                    else {
+                        insertHTML("beforeend", "jetbrains " + colour, "Invalid user.");
+                    }
+                    break;}
+                default: {
+                    insertHTML("beforeend", "jetbrains " + colour,
+                        "Usage: settings target_name target_setting");
+                    break;}
+            }
             break;}
         default: {
-            cliContainer.insertAdjacentHTML("beforeend",
-                "<span class='jetbrains red'>" + string.value + " : The term '" + string.value +
+            insertHTML("beforeend", "jetbrains " + colour, string.value + " : The term '" + string.value +
                 "' is not recognized as the name of a cmdlet, function, script file, or operable program. " +
                 "Check the spelling of the name, or if a path was included that the path is correct " +
-                "and try again.</span><br />");
+                "and try again.");
             break;}
     }
     history.push(string.value);
@@ -102,4 +148,13 @@ function newLine() {
 function newCodeLine() {
     cliContainer.insertAdjacentHTML("beforeend",
         '<br /><span class="jetbrains red">>> </span><input type="text" class="code-input jetbrains red">');
+}
+
+function insertHTML(where, tags, content) {
+    cliContainer.insertAdjacentHTML(where, "<span class='" + tags + "'>" + sanitizeHTML(content) + "</span><br />");
+}
+function sanitizeHTML(HTML) {
+    let element = document.createElement("div");
+    element.innerText = HTML;
+    return element.innerHTML;
 }
