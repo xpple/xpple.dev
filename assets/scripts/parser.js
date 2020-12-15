@@ -9,6 +9,7 @@ let n = 0;
 
 let colour = "red";
 let user = "xpple";
+let os = "windows";
 
 cliInputContainer.addEventListener('keydown', async(e) => {
     if (e.key === "Enter" && e.shiftKey === false && inputField.value !== "") {
@@ -36,7 +37,7 @@ cliInputContainer.addEventListener('keydown', async(e) => {
 
 function solidify(element) {
     cliContainer.insertAdjacentHTML("beforeend",
-        "<span class='jetbrains red'>PS C:\\Users\\" + user + ">&nbsp;</span><span class='jetbrains white'>" + sanitizeHTML(element.value) + "</span><br />");
+        "<span class='jetbrains red'>" + getPathFromOs(os) + user + ">&nbsp;</span><span class='jetbrains white'>" + sanitizeHTML(element.value) + "</span><br />");
 }
 
 async function parse(string) {
@@ -134,10 +135,31 @@ async function parse(string) {
                 case "user": {
                     if (string.value.split(" ")[2] !== undefined && string.value.split(" ")[2].trim()) {
                         user = string.value.split(" ")[2];
-                        document.querySelector("#cli-input-container > span").innerHTML = "PS C:\\Users\\" + user + ">&nbsp;";
+                        document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + user + ">&nbsp;";
                     }
                     else {
                         insertHTML("beforeend", "jetbrains " + colour, "Invalid user.");
+                    }
+                    break;}
+                case "os": {
+                    switch (string.value.split(" ")[2].toLocaleLowerCase()) {
+                        case "windows" : {
+                            //
+                            break;}
+                        case "linux" : {
+                            os = "linux";
+                            document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + user + ">&nbsp;";
+                            break;}
+                        case "x" : {
+                            //
+                            break;}
+                        case "y" : {
+                            //
+                            break;}
+                        default: {
+                            insertHTML("beforeend", "jetbrains " + colour,
+                                "Invalid OS.");
+                            break;}
                     }
                     break;}
                 default: {
@@ -172,4 +194,12 @@ function sanitizeHTML(HTML) {
     let element = document.createElement("div");
     element.innerText = HTML;
     return element.innerHTML;
+}
+function getPathFromOs(os) {
+    switch (os) {
+        case "windows":
+            return "PS C:\\Users\\"
+        case "linux":
+            return "/home/"
+    }
 }
