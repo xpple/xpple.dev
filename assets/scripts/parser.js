@@ -58,22 +58,22 @@ async function parse(string) {
         case "help": {
             switch (string.value.split(" ")[1]) {
                 case "xpple": {
-                    insertHTML("beforeend", "jetbrains " + colour, "Say hi!");
+                    insertHTML("beforeend", "jetbrains " + colour, "Say hi!. Usage: xpple");
                     break;}
                 case "ip": {
-                    insertHTML("beforeend", "jetbrains " + colour, "Get your ip");
+                    insertHTML("beforeend", "jetbrains " + colour, "Get your ip. Usage: ip");
                     break;}
                 case "help": {
                     insertHTML("beforeend", "jetbrains " + colour, "Usage: help target_command");
                     break;}
                 case "ping": {
-                    insertHTML("beforeend", "jetbrains " + colour, "Get your ping to the server");
+                    insertHTML("beforeend", "jetbrains " + colour, "Get your ping to the server. Usage: ping");
                     break;}
                 case "clear": {
-                    insertHTML("beforeend", "jetbrains " + colour, "Clear out the screen");
+                    insertHTML("beforeend", "jetbrains " + colour, "Clear out the screen. Usage: clear");
                     break;}
                 case "sudoku": {
-                    insertHTML("beforeend", "jetbrains " + colour, "Solve a sudoku");
+                    insertHTML("beforeend", "jetbrains " + colour, "Solve a sudoku. Coming soon.");
                     break;}
                 case "settings": {
                     insertHTML("beforeend", "jetbrains " + colour, "Change your settings. Usage: settings target_name target_setting");
