@@ -18,12 +18,12 @@ cliInputContainer.addEventListener('keydown', async(e) => {
         await parse(input);
         input.value = "";
         newLine();
-        input.focus()
+        input.focus();
 
         n = history.length;
     }
     else if (e.key === "Enter" && e.shiftKey === true) {
-        newCodeLine();
+        //newCodeLine();
     }
     else if (e.key === "ArrowUp" && n > 0) {
         n--;
@@ -37,7 +37,7 @@ cliInputContainer.addEventListener('keydown', async(e) => {
 
 function solidify(element) {
     cliContainer.insertAdjacentHTML("beforeend",
-        "<span class='jetbrains red'>" + getPathFromOs(os) + user + ">&nbsp;</span><span class='jetbrains white'>" + sanitizeHTML(element.value) + "</span><br />");
+        "<span class='jetbrains red'>" + getPathFromOs(os) + "&nbsp;</span><span class='jetbrains white'>" + sanitizeHTML(element.value) + "</span><br />");
 }
 
 async function parse(string) {
@@ -135,7 +135,7 @@ async function parse(string) {
                 case "user": {
                     if (string.value.split(" ")[2] !== undefined && string.value.split(" ")[2].trim()) {
                         user = string.value.split(" ")[2];
-                        document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + user + ">&nbsp;";
+                        document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
                     }
                     else {
                         insertHTML("beforeend", "jetbrains " + colour, "Invalid user.");
@@ -144,14 +144,16 @@ async function parse(string) {
                 case "os": {
                     switch (string.value.split(" ")[2].toLocaleLowerCase()) {
                         case "windows" : {
-                            //
+                            os = "windows";
+                            document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
                             break;}
                         case "linux" : {
                             os = "linux";
-                            document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + user + ">&nbsp;";
+                            document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
                             break;}
-                        case "x" : {
-                            //
+                        case "mac" : {
+                            os = "mac";
+                            document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
                             break;}
                         case "y" : {
                             //
@@ -182,11 +184,6 @@ function newLine() {
     cliContainer.appendChild(cliInputContainer);
 }
 
-function newCodeLine() {
-    cliContainer.insertAdjacentHTML("beforeend",
-        '<br /><span class="jetbrains red">>> </span><input type="text" class="code-input jetbrains red">');
-}
-
 function insertHTML(where, tags, content) {
     cliContainer.insertAdjacentHTML(where, "<span class='" + tags + "'>" + sanitizeHTML(content) + "</span><br />");
 }
@@ -198,8 +195,10 @@ function sanitizeHTML(HTML) {
 function getPathFromOs(os) {
     switch (os) {
         case "windows":
-            return "PS C:\\Users\\"
+            return "PS C:\\Users\\" + user + ">";
         case "linux":
-            return "/home/"
+            return "/home/" + user;
+        case "mac":
+            return user + ":~"
     }
 }
