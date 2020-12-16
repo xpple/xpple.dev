@@ -22,6 +22,9 @@ function getPing() {
 	exec("ping -n 3 $ip", $ping);
 
 	/*return explode("=", $ping[0])[1];*/
+    foreach($ping['data'] as $result) {
+        echo $result['type'], '<br>';
+    }
     return $ping;
 }
 
@@ -30,7 +33,7 @@ switch($_SERVER['QUERY_STRING']) {
 		echo getIp();
 		break;
 	case 'ping':
-		echo getPing();
+		//echo getPing();
 		break;
 	default:
 		show_source(__FILE__);
