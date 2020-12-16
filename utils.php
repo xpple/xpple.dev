@@ -22,9 +22,7 @@ function getPing() {
 	exec("ping -n 3 $ip", $ping);
 
 	/*return explode("=", $ping[0])[1];*/
-    foreach($ping['data'] as $result) {
-        echo $result['type'], '<br>';
-    }
+    print_r($ping);
     return $ping;
 }
 
