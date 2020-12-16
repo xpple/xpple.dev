@@ -31,7 +31,7 @@ switch($_SERVER['QUERY_STRING']) {
 		echo getIp();
 		break;
 	case 'ping':
-		//echo getPing();
+		echo getPing();
 		break;
 	default:
 		show_source(__FILE__);
