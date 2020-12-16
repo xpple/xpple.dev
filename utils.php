@@ -19,7 +19,6 @@ function getPing() {
 	else {
         exec("ping -6 -c 1 " . $ip . " | head -n 2 | tail -n 1 | awk '{print $7}'", $ping);
     }
-    echo json_encode($ping);
     return $ping;
 }
 
