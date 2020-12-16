@@ -10,11 +10,18 @@ function getIp() {
 		return $_SERVER['REMOTE_ADDR'];
 	}
 }
+
 function getPing() {
 	$ip = getIp();
-	exec("ping -c 1 " . $ip . " | head -n 2 | tail -n 1 | awk '{print $7}'", $ping);
+	if (strpos($ip, ":") === false) {
+        exec("ping -c 1 " . $ip . " | head -n 2 | tail -n 1 | awk '{print $7}'", $ping);
+    }
+	else {
+        exec("ping -6 -c 1 " . $ip . " | head -n 2 | tail -n 1 | awk '{print $7}'", $ping);
+    }
 	return explode("=", $ping[0])[1];
 }
+
 switch($_SERVER['QUERY_STRING']) {
 	case 'ip':
 		echo getIp();
@@ -26,4 +33,3 @@ switch($_SERVER['QUERY_STRING']) {
 		show_source(__FILE__);
 		break;
 }
-?>
