@@ -22,7 +22,7 @@ function getPing() {
 	exec("ping -n 3 $ip", $ping);
 
 	/*return explode("=", $ping[0])[1];*/
-    return explode("=", $ping)[1];
+    return $ping;
 }
 
 switch($_SERVER['QUERY_STRING']) {
