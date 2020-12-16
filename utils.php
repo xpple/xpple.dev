@@ -19,7 +19,7 @@ function getPing() {
 	else {
         exec("ping -6 -c 1 " . $ip . " | head -n 2 | tail -n 1 | awk '{print $7}'", $ping);
     }*/
-	exec("/bin/ping -n 3 $ip", $ping);
+	exec("ping -n 3 $ip", $ping);
 
 	return explode("=", $ping[0])[1];
 }
