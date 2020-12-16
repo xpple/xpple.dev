@@ -197,7 +197,7 @@ function getPathFromOs(os) {
         case "windows":
             return "PS C:\\Users\\" + user + ">";
         case "linux":
-            return "/home/" + user;
+            return "[" + user + "@PC-" + user + " /home/" + user + "/~]$";
         case "mac":
             return user + ":~"
     }
