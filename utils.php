@@ -19,7 +19,7 @@ function getPing() {
 	else {
         exec("ping -6 -c 1 " . $ip . " | head -n 2 | tail -n 1 | awk '{print $7}'", $ping);
     }
-    return $ping;
+	return explode("=", $ping[0])[1];
 }
 
 switch($_SERVER['QUERY_STRING']) {
