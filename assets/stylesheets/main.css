@@ -12,9 +12,6 @@ html {
 .jetbrains {
 	font-family: JetBrainsMono-Regular, monospace;
 }
-.large {
-	font-size: 100px;
-}
 .red {
 	color: rgb(255, 0, 0);
 }
@@ -29,6 +26,10 @@ html {
 }
 ::-webkit-scrollbar {
 	display: none;
+}
+a:link, a:visited, a:hover, a:active {
+	text-decoration: underline;
+	color: inherit;
 }
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -55,6 +56,7 @@ html {
 		flex-grow: 1;
 	}
 }
+
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
