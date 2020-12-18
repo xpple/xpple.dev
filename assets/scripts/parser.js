@@ -134,7 +134,7 @@ async function parse(string) {
                     break;}
                 case "user": {
                     if (string.value.split(" ")[2] !== undefined && string.value.split(" ")[2].trim()) {
-                        user = string.value.split(" ")[2];
+                        user = sanitizeHTML(string.value.split(" ")[2]);
                         document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
                     }
                     else {
