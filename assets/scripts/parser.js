@@ -170,6 +170,12 @@ async function parse(string) {
                     break;}
             }
             break;}
+        case "reset": {
+            user = "xpple";
+            colour = "red";
+            os = "windows";
+            document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
+            break;}
         default: {
             insertHTML("beforeend", "jetbrains " + colour, string.value + " : The term '" + string.value +
                 "' is not recognized as the name of a cmdlet, function, script file, or operable program. " +
