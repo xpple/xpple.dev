@@ -29,7 +29,7 @@ class Parser {
                 await this.reset();
                 break;
             default :
-                insertHTML("beforeend", "jetbrains " + colour, this.string + " : The fuck is that supposed to mean?");
+                insertHTML(this.string + " : The fuck is that supposed to mean?");
                 break;
         }
     }
@@ -43,38 +43,35 @@ class Parser {
 
         const text = await response.text();
 
-        insertHTML("beforeend", "jetbrains " + colour, text);
+        insertHTML(text);
     }
 
     async xpple() {
-        insertHTML("beforeend", "jetbrains " + colour, "Hey!");
+        insertHTML("Hey!");
     }
 
     async help() {
         switch (this.stringReader.readString()) {
             case "xpple" :
-                insertHTML("beforeend", "jetbrains " + colour, "Say hi!. Usage: xpple");
+                insertHTML("Say hi!. Usage: xpple");
                 break;
             case "ip" :
-                insertHTML("beforeend", "jetbrains " + colour, "Get your ip. Usage: ip");
+                insertHTML("Get your ip. Usage: ip");
                 break;
             case "help" :
-                insertHTML("beforeend", "jetbrains " + colour, "Usage: help target_command");
+                insertHTML("Usage: help target_command");
                 break;
             case "ping" :
-                insertHTML("beforeend", "jetbrains " + colour, "Get your ping to the server. Usage: ping");
+                insertHTML("Get your ping to the server. Usage: ping");
                 break;
             case "clear" :
-                insertHTML("beforeend", "jetbrains " + colour, "Clear out the screen. Usage: clear");
-                break;
-            case "sudoku" :
-                insertHTML("beforeend", "jetbrains " + colour, "Solve a sudoku. Coming soon.");
+                insertHTML("Clear out the screen. Usage: clear");
                 break;
             case "settings" :
-                insertHTML("beforeend", "jetbrains " + colour, "Change your settings. Usage: settings target_name target_setting");
+                insertHTML("Change your settings. Usage: settings target_name target_setting");
                 break;
             default :
-                insertHTML("beforeend", "jetbrains " + colour, "List of commands:");
+                insertHTML("List of commands:");
                 const response = await fetch("https://xpple.dev/assets/data/list.json");
 
                 if (!response.ok) {
@@ -83,8 +80,8 @@ class Parser {
 
                 const json = await response.json();
 
-                json.commands.forEach(element => insertHTML("beforeend", "jetbrains " + colour, element));
-                insertHTML("beforeend", "jetbrains " + colour, "To get help for any cmdlet or function, type: help command_name");
+                json.commands.forEach(element => insertHTML(element));
+                insertHTML("To get help for any cmdlet or function, type: help command_name");
         }
     }
 
@@ -97,7 +94,7 @@ class Parser {
 
         const text = await response.text();
 
-        insertHTML("beforeend", "jetbrains " + colour, text + " ms");
+        insertHTML(text + " ms");
     }
 
     async clear() {
@@ -122,8 +119,7 @@ class Parser {
                         colour = "black";
                         break;
                     default :
-                        insertHTML("beforeend", "jetbrains " + colour,
-                            "That ain't a colour.");
+                        insertHTML("That ain't a colour.");
                         break;
                 }
                 break;
@@ -133,7 +129,7 @@ class Parser {
                     user = sanitizeHTML(parsedString);
                     document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
                 } else {
-                    insertHTML("beforeend", "jetbrains " + colour, "Shit's invalid.");
+                    insertHTML("Shit's invalid.");
                 }
                 break;
             case "os" :
@@ -151,14 +147,12 @@ class Parser {
                         document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
                         break;
                     default:
-                        insertHTML("beforeend", "jetbrains " + colour,
-                            "Never heard of that.");
+                        insertHTML("Never heard of that.");
                         break;
                 }
                 break;
             default:
-                insertHTML("beforeend", "jetbrains " + colour,
-                    "Usage: settings target_name target_setting");
+                insertHTML("Usage: settings target_name target_setting");
                 break;
         }
     }

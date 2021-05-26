@@ -42,13 +42,17 @@ function newLine() {
     cliContainer.appendChild(cliInputContainer);
 }
 
-function insertHTML(where, tags, content) {
-    cliContainer.insertAdjacentHTML(where, "<span class='" + tags + "'>" + sanitizeHTML(content) + "</span><br />");
+function insertHTML(content) {
+    let output = document.querySelector("#output").content.cloneNode(true);
+    let span = output.querySelector("span");
+    span.setAttribute("class", "jetbrains " + colour);
+    span.innerHTML = sanitize(content);
+    cliContainer.appendChild(output);
 }
 
-function sanitizeHTML(HTML) {
+function sanitize(string) {
     let element = document.createElement("div");
-    element.innerText = HTML;
+    element.innerText = string;
     return element.innerHTML;
 }
 
