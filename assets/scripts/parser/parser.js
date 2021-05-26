@@ -127,28 +127,9 @@ class Parser {
                 let parsedString = this.stringReader.readString();
                 if (parsedString !== undefined) {
                     user = sanitizeHTML(parsedString);
-                    document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
+                    document.querySelector("#cli-input-container > span").innerHTML = user + "@main:~$&nbsp;";
                 } else {
                     insertHTML("Shit's invalid.");
-                }
-                break;
-            case "os" :
-                switch (this.stringReader.readString()) {
-                    case "windows" :
-                        os = "windows";
-                        document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
-                        break;
-                    case "linux" :
-                        os = "linux";
-                        document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
-                        break;
-                    case "mac" :
-                        os = "mac";
-                        document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
-                        break;
-                    default:
-                        insertHTML("Never heard of that.");
-                        break;
                 }
                 break;
             default:
@@ -160,7 +141,6 @@ class Parser {
     async reset() {
         user = "xpple";
         colour = "red";
-        os = "windows";
-        document.querySelector("#cli-input-container > span").innerHTML = getPathFromOs(os) + "&nbsp;";
+        document.querySelector("#cli-input-container > span").innerHTML = user + "@main:~$&nbsp;";
     }
 }

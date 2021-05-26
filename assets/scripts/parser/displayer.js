@@ -9,7 +9,6 @@ let n = 0;
 
 let colour = "red";
 let user = "xpple";
-let os = "windows";
 
 cliInputContainer.addEventListener('keydown', async(e) => {
     if (e.key === "Enter" && e.shiftKey === false && inputField.value !== "") {
@@ -35,7 +34,7 @@ cliInputContainer.addEventListener('keydown', async(e) => {
 
 function solidify(element) {
     cliContainer.insertAdjacentHTML("beforeend",
-        "<span class='jetbrains red'>" + getPathFromOs(os) + "&nbsp;</span><span class='jetbrains white'>" + sanitize(element.value) + "</span><br />");
+        "<span class='jetbrains red'>" + user + "@main:~$&nbsp;</span><span class='jetbrains white'>" + sanitize(element.value) + "</span><br />");
 }
 
 function newLine() {
@@ -54,15 +53,4 @@ function sanitize(string) {
     let element = document.createElement("div");
     element.innerText = string;
     return element.innerHTML;
-}
-
-function getPathFromOs(os) {
-    switch (os) {
-        case "windows" :
-            return "PS C:\\Users\\" + user + ">";
-        case "linux" :
-            return "[" + user + "@PC-" + user + " /home/" + user + "/~]$";
-        case "mac" :
-            return user + ":~"
-    }
 }
