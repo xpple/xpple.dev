@@ -35,7 +35,7 @@ cliInputContainer.addEventListener('keydown', async(e) => {
 
 function solidify(element) {
     cliContainer.insertAdjacentHTML("beforeend",
-        "<span class='jetbrains red'>" + getPathFromOs(os) + "&nbsp;</span><span class='jetbrains white'>" + sanitizeHTML(element.value) + "</span><br />");
+        "<span class='jetbrains red'>" + getPathFromOs(os) + "&nbsp;</span><span class='jetbrains white'>" + sanitize(element.value) + "</span><br />");
 }
 
 function newLine() {
