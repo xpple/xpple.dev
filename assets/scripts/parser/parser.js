@@ -126,7 +126,7 @@ class Parser {
             case "user" :
                 let parsedString = this.stringReader.readString();
                 if (parsedString !== undefined) {
-                    user = sanitizeHTML(parsedString);
+                    user = sanitize(parsedString);
                     document.querySelector("#cli-input-container > span").innerHTML = user + "@main:~$&nbsp;";
                 } else {
                     insertHTML("Shit's invalid.");
