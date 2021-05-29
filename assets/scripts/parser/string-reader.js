@@ -1,15 +1,15 @@
 class StringReader {
 
-    static SYNTAX_ESCAPE = '\\';
-    static SYNTAX_DOUBLE_QUOTE = '"';
-    static SYNTAX_SINGLE_QUOTE = '\'';
+    static #SYNTAX_ESCAPE = '\\';
+    static #SYNTAX_DOUBLE_QUOTE = '"';
+    static #SYNTAX_SINGLE_QUOTE = '\'';
 
     static #isAllowedNumber(char) {
         return char >= '0' && char <= '9' || char === '.' || char === '-';
     }
 
     static #isQuotedStringStart(char) {
-        return char === StringReader.SYNTAX_DOUBLE_QUOTE || char === StringReader.SYNTAX_SINGLE_QUOTE;
+        return char === StringReader.#SYNTAX_DOUBLE_QUOTE || char === StringReader.#SYNTAX_SINGLE_QUOTE;
     }
 
     static #isWhitespace(char) {
@@ -163,14 +163,14 @@ class StringReader {
         while (this.canRead()) {
             const char = this.read();
             if (escaped) {
-                if (char === terminator || char === StringReader.SYNTAX_ESCAPE) {
+                if (char === terminator || char === StringReader.#SYNTAX_ESCAPE) {
                     result += char;
                     escaped = false;
                 } else {
                     this.setCursor(this.getCursor() - 1);
                     throw new CommandSyntaxError(this);
                 }
-            } else if (char === StringReader.SYNTAX_ESCAPE) {
+            } else if (char === StringReader.#SYNTAX_ESCAPE) {
                 escaped = true;
             } else if (char === terminator) {
                 return result;
