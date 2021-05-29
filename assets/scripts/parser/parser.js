@@ -51,6 +51,7 @@ class Parser {
     }
 
     async help() {
+        this.stringReader.skip();
         switch (this.stringReader.readString()) {
             case "xpple" :
                 insertHTML("Say hi!. Usage: xpple");
@@ -103,30 +104,25 @@ class Parser {
     }
 
     async settings() {
+        this.stringReader.skip();
         switch (this.stringReader.readString()) {
             case "colour" :
-                switch (this.stringReader.readString()) {
-                    case "red" :
-                        colour = "red";
-                        break;
-                    case "blue" :
-                        colour = "blue";
-                        break;
-                    case "white" :
-                        colour = "white";
-                        break;
-                    case "black" :
-                        colour = "black";
-                        break;
-                    default :
-                        insertHTML("That ain't a colour.");
-                        break;
+                this.stringReader.skip();
+                let parsedColour = this.stringReader.readString();
+                let style = new Option().style;
+                style.color = parsedColour;
+
+                if (style.color !== "") {
+                    colour = parsedColour;
+                } else {
+                    insertHTML("Shit's invalid.");
                 }
                 break;
             case "user" :
-                let parsedString = this.stringReader.readString();
-                if (parsedString !== undefined) {
-                    user = sanitize(parsedString);
+                this.stringReader.skip();
+                let parsedUser = this.stringReader.readString();
+                if (parsedUser !== undefined) {
+                    user = sanitize(parsedUser);
                     document.querySelector("#cli-input-container > span").innerHTML = user + "@main:~$&nbsp;";
                 } else {
                     insertHTML("Shit's invalid.");

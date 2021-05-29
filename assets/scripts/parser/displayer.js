@@ -14,8 +14,16 @@ cliInputContainer.addEventListener('keydown', async(e) => {
     if (e.key === "Enter" && e.shiftKey === false && inputField.value !== "") {
         const input = inputField;
         solidify(input);
-        let parser = new Parser(input.value);
-        await parser.parse();
+        const parser = new Parser(input.value);
+        try {
+            await parser.parse();
+        } catch (e) {
+            if (e instanceof CommandSyntaxError) {
+                insertHTML(e.getName());
+            } else {
+                insertHTML("UnknownError");
+            }
+        }
         history.push(input.value);
         input.value = "";
         newLine();
@@ -44,7 +52,8 @@ function newLine() {
 function insertHTML(content) {
     let output = document.querySelector("#output").content.cloneNode(true);
     let span = output.querySelector("span");
-    span.setAttribute("class", "jetbrains " + colour);
+    span.setAttribute("class", "jetbrains");
+    span.style.color = colour;
     span.innerHTML = sanitize(content);
     cliContainer.appendChild(output);
 }

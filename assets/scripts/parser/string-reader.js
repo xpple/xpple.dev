@@ -1,10 +1,27 @@
 class StringReader {
-    static isQuotedChar(char) {
-        return char === '\"' || char === '\'';
+
+    static SYNTAX_ESCAPE = '\\';
+    static SYNTAX_DOUBLE_QUOTE = '"';
+    static SYNTAX_SINGLE_QUOTE = '\'';
+
+    static #isAllowedNumber(char) {
+        return char >= '0' && char <= '9' || char === '.' || char === '-';
     }
 
-    static isWhitespace(char) {
+    static #isQuotedStringStart(char) {
+        return char === StringReader.SYNTAX_DOUBLE_QUOTE || char === StringReader.SYNTAX_SINGLE_QUOTE;
+    }
+
+    static #isWhitespace(char) {
         return char === ' ' || char === '\t';
+    }
+
+    static #isAllowedInUnquotedString(char) {
+        return char >= '0' && char <= '9'
+            || char >= 'A' && char <= 'Z'
+            || char >= 'a' && char <= 'z'
+            || char === '_' || char === '-'
+            || char === '.' || char === '+';
     }
 
     constructor(string) {
@@ -16,46 +33,41 @@ class StringReader {
         return this.string;
     }
 
-    readString() {
-        this.skipWhitespace();
-        if (!this.canRead()) {
-            return "";
-        }
-        const next = this.peek();
-        if (StringReader.isQuotedChar(next)) {
-            this.skip();
-            return this.readQuotedString();
-        }
-        return this.readUnquotedString();
+    setCursor(cursor) {
+        this.cursor = cursor;
     }
 
-    readUnquotedString() {
-        const start = this.cursor;
-        while (this.canRead() && !StringReader.isWhitespace(this.peek())) {
-            this.skip();
+    getRemainingLength() {
+        return this.string.length - this.cursor;
+    }
+
+    getTotalLength() {
+        return this.string.length;
+    }
+
+    getCursor() {
+        return this.cursor;
+    }
+
+    getRead() {
+        return this.string.substring(0, this.cursor);
+    }
+
+    getRemaining() {
+        return this.string.substring(this.cursor);
+    }
+
+    canRead(length) {
+        if (length) {
+            return this.cursor + length <= this.string.length;
         }
-        return this.string.substring(start, this.cursor);
+        return this.cursor + 1 <= this.string.length;
     }
 
-    readQuotedString() {
-        const start = this.cursor;
-        while (this.canRead() && !StringReader.isQuotedChar(this.peek())) {
-            this.skip();
+    peek(offset) {
+        if (offset) {
+            return this.string.charAt(this.cursor + offset);
         }
-        return this.string.substring(start, this.cursor);
-    }
-
-    skipWhitespace() {
-        while (this.canRead() && StringReader.isWhitespace(this.peek())) {
-            this.skip();
-        }
-    }
-
-    skip() {
-        this.cursor++;
-    }
-
-    peek() {
         return this.string.charAt(this.cursor);
     }
 
@@ -63,7 +75,144 @@ class StringReader {
         return this.string.charAt(this.cursor++);
     }
 
-    canRead() {
-        return this.cursor <= this.string.length;
+    skip() {
+        this.cursor++;
+    }
+
+    skipWhitespace() {
+        while (this.canRead() && StringReader.#isWhitespace(this.peek())) {
+            this.skip();
+        }
+    }
+
+    readInt() {
+        const start = this.cursor;
+        while (this.canRead() && StringReader.#isAllowedNumber(this.peek())) {
+            this.skip();
+        }
+        const number = parseInt(this.string.substring(start, this.cursor));
+        if (!number) {
+            this.cursor = start;
+            throw new CommandSyntaxError(this);
+        }
+        return number;
+    }
+
+    readLong() {
+        const start = this.cursor;
+        while (this.canRead() && StringReader.#isAllowedNumber(this.peek())) {
+            this.skip();
+        }
+        const number = parseLong(this.string.substring(start, this.cursor));
+        if (!number) {
+            this.cursor = start;
+            throw new CommandSyntaxError(this);
+        }
+        return number;
+    }
+
+    readDouble() {
+        const start = this.cursor;
+        while (this.canRead() && StringReader.#isAllowedNumber(this.peek())) {
+            this.skip();
+        }
+        const number = parseDouble(this.string.substring(start, this.cursor));
+        if (!number) {
+            this.cursor = start;
+            throw new CommandSyntaxError(this);
+        }
+        return number;
+    }
+
+    readFloat() {
+        const start = this.cursor;
+        while (this.canRead() && StringReader.#isAllowedNumber(this.peek())) {
+            this.skip();
+        }
+        const number = parseFloat(this.string.substring(start, this.cursor));
+        if (!number) {
+            this.cursor = start;
+            throw new CommandSyntaxError(this);
+        }
+        return number;
+    }
+
+    readUnquotedString() {
+        const start = this.cursor;
+        while (this.canRead() && StringReader.#isAllowedInUnquotedString(this.peek())) {
+            this.skip();
+        }
+        return this.string.substring(start, this.cursor);
+    }
+
+    readQuotedString() {
+        if (!this.canRead()) {
+            return "";
+        }
+        const next = this.peek();
+        if (!StringReader.#isQuotedStringStart(next)) {
+            throw new CommandSyntaxError(this);
+        }
+        this.skip();
+        return this.readStringUntil(next);
+    }
+
+    readStringUntil(terminator) {
+        let result = "";
+        let escaped = false;
+        while (this.canRead()) {
+            const char = this.read();
+            if (escaped) {
+                if (char === terminator || char === StringReader.SYNTAX_ESCAPE) {
+                    result += char;
+                    escaped = false;
+                } else {
+                    this.setCursor(this.getCursor() - 1);
+                    throw new CommandSyntaxError(this);
+                }
+            } else if (char === StringReader.SYNTAX_ESCAPE) {
+                escaped = true;
+            } else if (char === terminator) {
+                return result;
+            } else {
+                result += char;
+            }
+        }
+        throw new CommandSyntaxError(this);
+    }
+
+    readString() {
+        if (!this.canRead()) {
+            return "";
+        }
+        const next = this.peek();
+        if (StringReader.#isQuotedStringStart(next)) {
+            this.skip();
+            return this.readStringUntil(next);
+        }
+        return this.readUnquotedString();
+    }
+
+    readBoolean() {
+        const start = this.cursor;
+        const value = this.readString();
+        if (!value) {
+            throw new CommandSyntaxError(this);
+        }
+        if (value === "true") {
+            return true;
+        } else if (value === "false") {
+            return false;
+        } else {
+            this.cursor = start;
+            throw new CommandSyntaxError(this);
+        }
+    }
+
+    expect(char) {
+        if (!this.canRead() || this.peek() !== char) {
+            throw new CommandSyntaxError(this);
+        }
+        this.skip();
     }
 }
