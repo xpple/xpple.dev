@@ -1,3 +1,6 @@
+import {Parser} from "./parser";
+import {CommandSyntaxError} from "../errors/command-syntax-error";
+
 document.querySelector(".input").focus();
 
 let cliContainer = document.querySelector("#cli-container");
@@ -7,8 +10,8 @@ let inputField = document.querySelector(".input");
 let history = [];
 let n = 0;
 
-let colour = "red";
-let user = "xpple";
+export let colour = "red";
+export let user = "xpple";
 
 cliInputContainer.addEventListener('keydown', async(e) => {
     if (e.key === "Enter" && e.shiftKey === false && inputField.value !== "") {
@@ -49,7 +52,7 @@ function newLine() {
     cliContainer.appendChild(cliInputContainer);
 }
 
-function insertHTML(content) {
+export function insertHTML(content) {
     let output = document.querySelector("#output").content.cloneNode(true);
     let span = output.querySelector("span");
     span.setAttribute("class", "jetbrains");
@@ -58,7 +61,7 @@ function insertHTML(content) {
     cliContainer.appendChild(output);
 }
 
-function sanitize(string) {
+export function sanitize(string) {
     let element = document.createElement("div");
     element.innerText = string;
     return element.innerHTML;

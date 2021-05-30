@@ -1,4 +1,6 @@
-class StringReader {
+import {CommandSyntaxError} from "../errors/command-syntax-error";
+
+export class StringReader {
 
     static #SYNTAX_ESCAPE = '\\';
     static #SYNTAX_DOUBLE_QUOTE = '"';

@@ -1,4 +1,8 @@
-class Parser {
+import {StringReader} from "./string-reader";
+import {insertHTML, sanitize} from "./displayer";
+import {user, colour} from "./displayer";
+
+export class Parser {
 
     constructor(string) {
         this.string = string;
