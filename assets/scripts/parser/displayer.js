@@ -1,5 +1,5 @@
-import {Parser} from "./parser";
-import {CommandSyntaxError} from "../errors/command-syntax-error";
+import {Parser} from "./parser.js";
+import {CommandSyntaxError} from "../errors/command-syntax-error.js";
 
 document.querySelector(".input").focus();
 

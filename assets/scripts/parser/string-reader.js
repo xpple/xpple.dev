@@ -1,4 +1,4 @@
-import {CommandSyntaxError} from "../errors/command-syntax-error";
+import {CommandSyntaxError} from "../errors/command-syntax-error.js";
 
 export class StringReader {
 

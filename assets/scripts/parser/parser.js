@@ -1,6 +1,6 @@
-import {StringReader} from "./string-reader";
-import {insertHTML, sanitize} from "./displayer";
-import {user, colour} from "./displayer";
+import {StringReader} from "./string-reader.js";
+import {insertHTML, sanitize} from "./displayer.js";
+import {user, colour} from "./displayer.js";
 
 export class Parser {
 
