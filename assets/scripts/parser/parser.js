@@ -1,6 +1,6 @@
 import {StringReader} from "./string-reader.js";
-import {insertHTML, sanitize} from "./displayer.js";
-import {user, colour} from "./displayer.js";
+import {getUser, insertHTML, sanitize} from "./displayer.js";
+import {setUser, setColour} from "./displayer.js";
 
 export class Parser {
 
@@ -117,7 +117,7 @@ export class Parser {
                 style.color = parsedColour;
 
                 if (style.color !== "") {
-                    colour = parsedColour;
+                    setColour(parsedColour);
                 } else {
                     insertHTML("Shit's invalid.");
                 }
@@ -126,8 +126,8 @@ export class Parser {
                 this.stringReader.skip();
                 let parsedUser = this.stringReader.readString();
                 if (parsedUser !== undefined) {
-                    user = sanitize(parsedUser);
-                    document.querySelector("#cli-input-container > span").innerHTML = user + "@main:~$&nbsp;";
+                    setUser(sanitize(parsedUser));
+                    document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:~$&nbsp;";
                 } else {
                     insertHTML("Shit's invalid.");
                 }
@@ -139,8 +139,8 @@ export class Parser {
     }
 
     async reset() {
-        user = "xpple";
-        colour = "red";
-        document.querySelector("#cli-input-container > span").innerHTML = user + "@main:~$&nbsp;";
+        setUser("xpple");
+        setColour("red");
+        document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:~$&nbsp;";
     }
 }

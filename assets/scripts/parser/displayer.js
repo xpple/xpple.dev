@@ -10,8 +10,8 @@ let inputField = document.querySelector(".input");
 let history = [];
 let n = 0;
 
-export let colour = "red";
-export let user = "xpple";
+let colour = "red";
+let user = "xpple";
 
 cliInputContainer.addEventListener('keydown', async(e) => {
     if (e.key === "Enter" && e.shiftKey === false && inputField.value !== "") {
@@ -65,4 +65,20 @@ export function sanitize(string) {
     let element = document.createElement("div");
     element.innerText = string;
     return element.innerHTML;
+}
+
+export function getUser() {
+    return user;
+}
+
+export function setUser(newUser) {
+    user = newUser;
+}
+
+export function getColour() {
+    return colour;
+}
+
+export function setColour(newColour) {
+    colour = newColour;
 }
