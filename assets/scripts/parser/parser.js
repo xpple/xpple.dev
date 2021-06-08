@@ -78,6 +78,12 @@ export class Parser {
             case "settings" :
                 insertHTML("Change your settings. Usage: settings target_name target_setting");
                 break;
+            case "reset":
+                insertHTML("Reset your settings. Usage: reset")
+                break;
+            case "discord":
+                insertHTML("Get the link to my Discord. Usage: discord")
+                break;
             default :
                 insertHTML("List of commands:");
                 const response = await fetch("https://xpple.dev/assets/data/list.json");
