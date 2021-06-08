@@ -5,6 +5,8 @@
     "help. . . . . . . : Show a list of commands",
 	"ping. . . . . . . : Get your ping to the server",
 	"clear . . . . . . : Clear out the screen",
-    "settings. . . . . : Change your settings"
+    "settings. . . . . : Change your settings",
+    "reset . . . . . . : Reset your settings",
+    "discord . . . . . : Get the link to my Discord"
   ]
 }

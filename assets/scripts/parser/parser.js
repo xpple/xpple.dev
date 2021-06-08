@@ -32,6 +32,9 @@ export class Parser {
             case "reset" :
                 await this.reset();
                 break;
+            case "discord":
+                await this.discord();
+                break;
             default :
                 insertHTML(this.string + " : The fuck is that supposed to mean?");
                 break;
@@ -142,5 +145,9 @@ export class Parser {
         setUser("xpple");
         setColour("red");
         document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:~$&nbsp;";
+    }
+
+    async discord() {
+        insertHTML("https://discord.gg/b37kbptSCA");
     }
 }
