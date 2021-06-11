@@ -10,7 +10,7 @@ export class Parser {
     }
 
     async parse() {
-        switch (this.stringReader.readString()) {
+        switch (this.stringReader.readString().toLowerCase()) {
             case "ip" :
                 await this.ip();
                 break;
@@ -59,7 +59,7 @@ export class Parser {
 
     async help() {
         this.stringReader.skip();
-        switch (this.stringReader.readString()) {
+        switch (this.stringReader.readString().toLowerCase()) {
             case "xpple" :
                 insertHTML("Say hi!. Usage: xpple");
                 break;
@@ -118,10 +118,10 @@ export class Parser {
 
     async settings() {
         this.stringReader.skip();
-        switch (this.stringReader.readString()) {
+        switch (this.stringReader.readString().toLowerCase()) {
             case "colour" :
                 this.stringReader.skip();
-                let parsedColour = this.stringReader.readString();
+                let parsedColour = this.stringReader.readString().toLowerCase();
                 let style = new Option().style;
                 style.color = parsedColour;
 
@@ -133,7 +133,7 @@ export class Parser {
                 break;
             case "user" :
                 this.stringReader.skip();
-                let parsedUser = this.stringReader.readString();
+                let parsedUser = this.stringReader.readString().toLowerCase();
                 if (parsedUser !== undefined) {
                     setUser(sanitize(parsedUser));
                     document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:~$&nbsp;";
