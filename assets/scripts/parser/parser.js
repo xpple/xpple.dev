@@ -154,6 +154,6 @@ export class Parser {
     }
 
     async discord() {
-        insertHTML("https://discord.gg/b37kbptSCA");
+        insertHTML("https://discord.xpple.dev/");
     }
 }
