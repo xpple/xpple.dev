@@ -12,7 +12,7 @@ import {SettingsCommand} from "../command/commands/settings-command.js";
 import {Command} from "../command/command.js";
 import {Path} from "../file_system/path.js";
 import {CdCommand} from "../command/commands/cd-command.js";
-import {IllegalArgumentError} from "../errors/illegal-argument-error";
+import {IllegalArgumentError} from "../errors/illegal-argument-error.js";
 
 document.querySelector(".input").focus();
 
