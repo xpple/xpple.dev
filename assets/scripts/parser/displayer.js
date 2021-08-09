@@ -12,6 +12,7 @@ import {SettingsCommand} from "../command/commands/settings-command.js";
 import {Command} from "../command/command.js";
 import {Path} from "../file_system/path.js";
 import {CdCommand} from "../command/commands/cd-command.js";
+import {IllegalArgumentError} from "../errors/illegal-argument-error";
 
 document.querySelector(".input").focus();
 
@@ -45,7 +46,7 @@ cliInputContainer.addEventListener('keydown', async(e) => {
         try {
             await parser.parse();
         } catch (e) {
-            if (e instanceof CommandSyntaxError) {
+            if (e instanceof CommandSyntaxError || IllegalArgumentError) {
                 insertHTML(e.getName());
             } else {
                 insertHTML("UnknownError");
