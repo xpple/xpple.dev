@@ -46,7 +46,7 @@ cliInputContainer.addEventListener('keydown', async(e) => {
         try {
             await parser.parse();
         } catch (e) {
-            if (e instanceof CommandSyntaxError || IllegalArgumentError) {
+            if (e instanceof CommandSyntaxError || e instanceof IllegalArgumentError) {
                 insertHTML(e.getName());
             } else {
                 insertHTML("UnknownError");
