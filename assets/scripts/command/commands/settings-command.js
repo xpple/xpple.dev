@@ -1,4 +1,4 @@
-import {getUser, insertHTML, sanitize, setColour, setUser} from "../../parser/displayer.js";
+import {getCurrentDir, getUser, insertHTML, sanitize, setColour, setUser} from "../../parser/displayer.js";
 import {Command} from "../command.js";
 
 export class SettingsCommand extends Command {
@@ -27,7 +27,7 @@ export class SettingsCommand extends Command {
                 let parsedUser = context.readString().toLowerCase();
                 if (parsedUser !== undefined) {
                     setUser(sanitize(parsedUser));
-                    document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:~$&nbsp;";
+                    document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:" + getCurrentDir().path + "$&nbsp;";
                 } else {
                     insertHTML("Shit's invalid.");
                 }

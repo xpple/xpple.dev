@@ -10,6 +10,8 @@ import {PingCommand} from "../command/commands/ping-command.js";
 import {ResetCommand} from "../command/commands/reset-command.js";
 import {SettingsCommand} from "../command/commands/settings-command.js";
 import {Command} from "../command/command.js";
+import {Path} from "../file_system/path.js";
+import {CdCommand} from "../command/commands/cd-command.js";
 
 document.querySelector(".input").focus();
 
@@ -22,7 +24,9 @@ let n = 0;
 
 let colour = "red";
 let user = "xpple";
+let currentDir = new Path(window.location.origin + "/tree/", ["~"]);
 
+Command.register(new CdCommand());
 Command.register(new ClearCommand());
 Command.register(new DiscordCommand());
 Command.register(new HelpCommand());
@@ -65,7 +69,7 @@ cliInputContainer.addEventListener('keydown', async(e) => {
 
 function solidify(element) {
     cliContainer.insertAdjacentHTML("beforeend",
-        "<span class='jetbrains red'>" + user + "@main:~$&nbsp;</span><span class='jetbrains white'>" + sanitize(element.value) + "</span><br />");
+        "<span class='jetbrains red'>" + user + "@main:" + getCurrentDir().path + "$&nbsp;</span><span class='jetbrains white'>" + sanitize(element.value) + "</span><br />");
 }
 
 function newLine() {
@@ -101,4 +105,12 @@ export function getColour() {
 
 export function setColour(newColour) {
     colour = newColour;
+}
+
+export function getCurrentDir() {
+    return currentDir;
+}
+
+export function setCurrentDir(newCurrentDir) {
+    currentDir = newCurrentDir;
 }

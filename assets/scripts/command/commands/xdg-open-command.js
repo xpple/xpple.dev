@@ -1,5 +1,6 @@
-import {insertHTML} from "../../parser/displayer.js";
+import {getCurrentDir, insertHTML} from "../../parser/displayer.js";
 import {Command} from "../command.js";
+import {CommandSyntaxError} from "../../errors/command-syntax-error.js";
 
 export class XdgOpenCommand extends Command {
 
@@ -7,7 +8,23 @@ export class XdgOpenCommand extends Command {
         super("xdg-open");
     }
 
-    execute(context) {
-        insertHTML("lmao");
+    async execute(context) {
+        context.skip();
+        const filePath = context.readString();
+        const path = getCurrentDir().resolve(filePath);
+        await path.isFile()
+            .then(result => {
+                if (result === true) {
+                    XdgOpenCommand.openFile(path);
+                } else {
+                    insertHTML("Not a file");
+                }
+            }).catch(e => {
+                throw CommandSyntaxError(e);
+            });
+    }
+
+    static openFile(path) {
+
     }
 }
