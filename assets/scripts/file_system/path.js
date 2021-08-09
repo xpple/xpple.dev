@@ -82,10 +82,10 @@ export class Path {
             return new Path(this.root, ["~"]);
         }
         let temp = this;
-        for (let i = 0; i < otherPathString.split(".." + Path.#SEPARATOR).length - 1; i++) {
+        while (otherPathString.startsWith(".." + Path.#SEPARATOR)) {
+            otherPathString = otherPathString.substring(otherPathString.indexOf(".." + Path.#SEPARATOR));
             temp = temp.getParent();
         }
-        otherPathString = otherPathString.substring(otherPathString.lastIndexOf(".." + Path.#SEPARATOR));
         temp = temp.path.split(Path.#SEPARATOR).concat(otherPathString.split(Path.#SEPARATOR));
         return new Path(this.root, temp);
     }
