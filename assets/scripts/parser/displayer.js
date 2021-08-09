@@ -24,7 +24,7 @@ let n = 0;
 
 let colour = "red";
 let user = "xpple";
-let currentDir = new Path(window.location.origin + "/tree/", ["~"]);
+let currentDir = new Path(window.location.origin, ["~"]);
 
 Command.register(new CdCommand());
 Command.register(new ClearCommand());

@@ -10,7 +10,7 @@ export class XdgOpenCommand extends Command {
 
     async execute(context) {
         context.skip();
-        const filePath = context.readString();
+        const filePath = context.getRemaining();
         const path = getCurrentDir().resolve(filePath);
         await path.isFile()
             .then(result => {

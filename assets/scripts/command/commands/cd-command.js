@@ -10,7 +10,7 @@ export class CdCommand extends Command {
 
     async execute(context) {
         context.skip();
-        const dir = context.readString();
+        const dir = context.getRemaining();
         const path = getCurrentDir().resolve(dir);
         await path.isFile()
             .then(result => {
