@@ -75,7 +75,7 @@ export class Path {
         if (!(typeof otherPathString === "string" || otherPathString instanceof String)) {
             throw IllegalArgumentError();
         }
-        if (this.path === "") {
+        if (this.path === "~" || this.path === "") {
             return new Path(this.root, otherPathString.split(Path.#SEPARATOR));
         } else {
             const temp = this.path.split(Path.#SEPARATOR).concat(otherPathString.split(Path.#SEPARATOR));
