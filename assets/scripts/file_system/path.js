@@ -77,10 +77,17 @@ export class Path {
         }
         if (this.path === "~" || this.path === "") {
             return new Path(this.root, otherPathString.split(Path.#SEPARATOR));
-        } else {
-            const temp = this.path.split(Path.#SEPARATOR).concat(otherPathString.split(Path.#SEPARATOR));
-            return new Path(this.root, temp);
         }
+        if (otherPathString === "~") {
+            return new Path(this.root, ["~"]);
+        }
+        let temp = this;
+        for (let i = 0; i < otherPathString.split(".." + Path.#SEPARATOR).length - 1; i++) {
+            temp = temp.getParent();
+        }
+        otherPathString = otherPathString.substring(otherPathString.lastIndexOf(".." + Path.#SEPARATOR));
+        temp = temp.path.split(Path.#SEPARATOR).concat(otherPathString.split(Path.#SEPARATOR));
+        return new Path(this.root, temp);
     }
 
     resolveSibling(otherPathString) {
