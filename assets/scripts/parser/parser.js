@@ -16,6 +16,6 @@ export class Parser {
             insertHTML(this.string + " : The fuck is that supposed to mean?");
             return;
         }
-        command.execute(this.stringReader);
+        await command.execute(this.stringReader);
     }
 }
