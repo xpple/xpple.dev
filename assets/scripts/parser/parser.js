@@ -1,6 +1,6 @@
 import {StringReader} from "./string-reader.js";
-import {getUser, insertHTML, sanitize} from "./displayer.js";
-import {setUser, setColour} from "./displayer.js";
+import {insertHTML} from "./displayer.js";
+import {Command} from "../command/command.js";
 
 export class Parser {
 
@@ -10,150 +10,12 @@ export class Parser {
     }
 
     async parse() {
-        switch (this.stringReader.readString().toLowerCase()) {
-            case "ip" :
-                await this.ip();
-                break;
-            case "xpple" :
-                await this.xpple();
-                break;
-            case "help" :
-                await this.help();
-                break;
-            case "ping" :
-                await this.ping();
-                break;
-            case "clear" :
-                await this.clear();
-                break;
-            case "settings" :
-                await this.settings();
-                break;
-            case "reset" :
-                await this.reset();
-                break;
-            case "discord":
-                await this.discord();
-                break;
-            default :
-                insertHTML(this.string + " : The fuck is that supposed to mean?");
-                break;
-        }
-    }
-
-    async ip() {
-        const response = await fetch("utils.php?ip");
-
-        if (!response.ok) {
+        const rootLiteral = this.stringReader.readString().toLowerCase();
+        const command = Command.commands.get(rootLiteral);
+        if (command === undefined) {
+            insertHTML(this.string + " : The fuck is that supposed to mean?");
             return;
         }
-
-        const text = await response.text();
-
-        insertHTML(text);
-    }
-
-    async xpple() {
-        insertHTML("Hey!");
-    }
-
-    async help() {
-        this.stringReader.skip();
-        switch (this.stringReader.readString().toLowerCase()) {
-            case "xpple" :
-                insertHTML("Say hi!. Usage: xpple");
-                break;
-            case "ip" :
-                insertHTML("Get your ip. Usage: ip");
-                break;
-            case "help" :
-                insertHTML("Usage: help target_command");
-                break;
-            case "ping" :
-                insertHTML("Get your ping to the server. Usage: ping");
-                break;
-            case "clear" :
-                insertHTML("Clear out the screen. Usage: clear");
-                break;
-            case "settings" :
-                insertHTML("Change your settings. Usage: settings target_name target_setting");
-                break;
-            case "reset":
-                insertHTML("Reset your settings. Usage: reset")
-                break;
-            case "discord":
-                insertHTML("Get the link to my Discord. Usage: discord")
-                break;
-            default :
-                insertHTML("List of commands:");
-                const response = await fetch("https://xpple.dev/assets/data/list.json");
-
-                if (!response.ok) {
-                    return;
-                }
-
-                const json = await response.json();
-
-                json.commands.forEach(element => insertHTML(element));
-                insertHTML("To get help for any cmdlet or function, type: help command_name");
-        }
-    }
-
-    async ping() {
-        const response = await fetch("utils.php?ping");
-
-        if (!response.ok) {
-            return;
-        }
-
-        const text = await response.text();
-
-        insertHTML(text + " ms");
-    }
-
-    async clear() {
-        document.querySelectorAll("#cli-container > br").forEach(element => element.remove());
-        document.querySelectorAll("#cli-container > span").forEach(element => element.remove());
-    }
-
-    async settings() {
-        this.stringReader.skip();
-        switch (this.stringReader.readString().toLowerCase()) {
-            case "colour" :
-                this.stringReader.skip();
-                let parsedColour = this.stringReader.readString().toLowerCase();
-                let style = new Option().style;
-                style.color = parsedColour;
-
-                if (style.color !== "") {
-                    setColour(parsedColour);
-                } else {
-                    insertHTML("Shit's invalid.");
-                }
-                break;
-            case "user" :
-                this.stringReader.skip();
-                let parsedUser = this.stringReader.readString().toLowerCase();
-                if (parsedUser !== undefined) {
-                    setUser(sanitize(parsedUser));
-                    document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:~$&nbsp;";
-                } else {
-                    insertHTML("Shit's invalid.");
-                }
-                break;
-            default:
-                insertHTML("Usage: settings target_name target_setting");
-                break;
-        }
-    }
-
-    async reset() {
-        setUser("xpple");
-        setColour("red");
-        document.querySelector("#cli-input-container > span").innerHTML = getUser() + "@main:~$&nbsp;";
-    }
-
-    async discord() {
-        insertHTML("https://discord.xpple.dev/");
+        command.execute(this.stringReader);
     }
 }

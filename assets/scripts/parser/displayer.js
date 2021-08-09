@@ -1,5 +1,15 @@
 import {Parser} from "./parser.js";
 import {CommandSyntaxError} from "../errors/command-syntax-error.js";
+import {XdgOpenCommand} from "../command/commands/xdg-open-command.js";
+import {HelpCommand} from "../command/commands/help-command.js";
+import {IpCommand} from "../command/commands/ip-command.js";
+import {XppleCommand} from "../command/commands/xpple-command.js";
+import {ClearCommand} from "../command/commands/clear-command.js";
+import {DiscordCommand} from "../command/commands/discord-command.js";
+import {PingCommand} from "../command/commands/ping-command.js";
+import {ResetCommand} from "../command/commands/reset-command.js";
+import {SettingsCommand} from "../command/commands/settings-command.js";
+import {Command} from "../command/command.js";
 
 document.querySelector(".input").focus();
 
@@ -12,6 +22,16 @@ let n = 0;
 
 let colour = "red";
 let user = "xpple";
+
+Command.register(new ClearCommand());
+Command.register(new DiscordCommand());
+Command.register(new HelpCommand());
+Command.register(new IpCommand());
+Command.register(new PingCommand());
+Command.register(new ResetCommand());
+Command.register(new SettingsCommand());
+Command.register(new XdgOpenCommand());
+Command.register(new XppleCommand());
 
 cliInputContainer.addEventListener('keydown', async(e) => {
     if (e.key === "Enter" && e.shiftKey === false && inputField.value !== "") {
