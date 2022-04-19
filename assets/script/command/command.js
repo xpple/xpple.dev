@@ -31,7 +31,7 @@ export /*abstract*/ class Command {
     }
 
     /**
-     *
+     * Execute the command.
      * @param {StringReader} reader
      * @returns {Promise<void>}
      */

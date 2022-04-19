@@ -8,6 +8,7 @@ import {HelpCommand} from "./commands/help-command.js";
 import {ClearCommand} from "./commands/clear-command.js";
 import {UserAgentCommand} from "./commands/user-agent-command.js";
 import {IpCommand} from "./commands/ip-command.js";
+import {EchoCommand} from "./commands/echo-command.js";
 
 export class CommandHandler {
 
@@ -95,28 +96,35 @@ export class CommandHandler {
         this.#registerCommands();
     }
 
+    /**
+     * Send feedback to the screen. Sanitise the input if needed.
+     * @param {HTMLElement | String} string
+     */
     static sendFeedback(string) {
         this.#inputContainer.insertAdjacentHTML('beforebegin', `<span style="color: white;">${string}</span><br>`);
     }
 
+    /**
+     * Send an error to the screen. Sanitise the input if needed.
+     * @param {HTMLElement | String} string
+     */
     static sendError(string) {
         this.#inputContainer.insertAdjacentHTML('beforebegin', `<span style="color: red;">${string}</span><br>`);
     }
 
     static async #handleCommand(commandString) {
         this.#inputField.value = "";
+        const cleanCommandString = this.sanitiseString(commandString);
+        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt + cleanCommandString}</span><br>`);
         if (commandString === "") {
-            this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt}</span><br>`);
             return;
         }
         this.#history.push(commandString);
-        commandString = this.sanitiseString(commandString);
-        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt + commandString}</span><br>`);
         const reader = new StringReader(commandString);
         const rootLiteral = reader.readUnquotedString();
         const command = Command.commands.get(rootLiteral);
         if (command === undefined) {
-            throw new UnknownCommandError(commandString);
+            throw new UnknownCommandError(cleanCommandString);
         }
         reader.skipWhitespace();
         this.#inputContainer.style.visibility = "hidden";
@@ -138,5 +146,6 @@ export class CommandHandler {
         Command.register(new ClearCommand());
         Command.register(new UserAgentCommand());
         Command.register(new IpCommand());
+        Command.register(new EchoCommand());
     }
 }
