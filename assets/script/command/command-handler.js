@@ -7,6 +7,7 @@ import {DiscordCommand} from "./commands/discord-command.js";
 import {HelpCommand} from "./commands/help-command.js";
 import {ClearCommand} from "./commands/clear-command.js";
 import {UserAgentCommand} from "./commands/user-agent-command.js";
+import {IpCommand} from "./commands/ip-command.js";
 
 export class CommandHandler {
 
@@ -109,7 +110,7 @@ export class CommandHandler {
             return;
         }
         this.#history.push(commandString);
-        commandString = this.#sanitiseString(commandString);
+        commandString = this.sanitiseString(commandString);
         this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt + commandString}</span><br>`);
         const reader = new StringReader(commandString);
         const rootLiteral = reader.readUnquotedString();
@@ -118,10 +119,13 @@ export class CommandHandler {
             throw new UnknownCommandError(commandString);
         }
         reader.skipWhitespace();
+        this.#inputContainer.style.visibility = "hidden";
         await command.execute(reader);
+        this.#inputContainer.style.visibility = "visible";
+        this.#inputField.focus();
     }
 
-    static #sanitiseString(string) {
+    static sanitiseString(string) {
         const element = document.createElement("div");
         element.innerText = string;
         return element.innerHTML;
@@ -133,5 +137,6 @@ export class CommandHandler {
         Command.register(new HelpCommand());
         Command.register(new ClearCommand());
         Command.register(new UserAgentCommand());
+        Command.register(new IpCommand());
     }
 }
