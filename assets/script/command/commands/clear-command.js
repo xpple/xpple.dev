@@ -4,10 +4,10 @@ import {CommandHandler} from "../command-handler.js";
 export class ClearCommand extends Command {
 
     constructor() {
-        super("clear");
+        super("clear", "Clear the screen.");
     }
 
-    async execute(context) {
+    async execute(reader) {
         CommandHandler.cliContainer.querySelectorAll("span, br").forEach(e => e.remove());
     }
 }

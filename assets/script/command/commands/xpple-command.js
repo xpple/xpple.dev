@@ -3,10 +3,10 @@ import {Command} from "../command.js";
 export class XppleCommand extends Command {
 
     constructor() {
-        super("xpple");
+        super("xpple", "Say hi to me!");
     }
 
-    async execute(context) {
+    async execute(reader) {
         this.sendFeedback("Hey!");
     }
 }

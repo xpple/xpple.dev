@@ -2,6 +2,9 @@ import {CommandHandler} from "./command-handler.js";
 
 export /*abstract*/ class Command {
 
+    /**
+     * @type {Map<String, Command>}
+     */
     static commands = new Map();
 
     static register(command) {
@@ -19,14 +22,20 @@ export /*abstract*/ class Command {
         CommandHandler.sendError(string);
     }
 
-    constructor(rootLiteral) {
+    constructor(rootLiteral, description) {
         if (this.constructor === Command) {
             throw new Error("Object of Abstract Class cannot be created");
         }
         this.rootLiteral = rootLiteral;
+        this.description = description;
     }
 
-    async execute(context) {
+    /**
+     *
+     * @param {StringReader} reader
+     * @returns {Promise<void>}
+     */
+    async execute(reader) {
         throw new Error("Method of Abstract Class cannot be called");
     }
 }
