@@ -54,7 +54,7 @@ export class CommandHandler {
             console.error("Too many labels were associated to this input field.");
             return;
         }
-        this.#prompt = this.#inputField.labels[0].innerText;
+        this.#prompt = labels[0].innerText;
         this.#inputField.addEventListener('keydown', async e => {
             switch (e.key) {
                 case "Enter":
