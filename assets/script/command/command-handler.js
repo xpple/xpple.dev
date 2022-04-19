@@ -104,12 +104,13 @@ export class CommandHandler {
 
     static async #handleCommand(commandString) {
         this.#inputField.value = "";
-        commandString = this.#sanitiseString(commandString);
-        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt + commandString}</span><br>`);
         if (commandString === "") {
+            this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt}</span><br>`);
             return;
         }
         this.#history.push(commandString);
+        commandString = this.#sanitiseString(commandString);
+        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt + commandString}</span><br>`);
         const reader = new StringReader(commandString);
         const rootLiteral = reader.readUnquotedString();
         const command = Command.commands.get(rootLiteral);
