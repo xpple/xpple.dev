@@ -6,6 +6,7 @@ import {CommandSyntaxError} from "../errors/command-syntax-error.js";
 import {DiscordCommand} from "./commands/discord-command.js";
 import {HelpCommand} from "./commands/help-command.js";
 import {ClearCommand} from "./commands/clear-command.js";
+import {UserAgentCommand} from "./commands/user-agent-command.js";
 
 export class CommandHandler {
 
@@ -130,5 +131,6 @@ export class CommandHandler {
         Command.register(new DiscordCommand());
         Command.register(new HelpCommand());
         Command.register(new ClearCommand());
+        Command.register(new UserAgentCommand());
     }
 }
