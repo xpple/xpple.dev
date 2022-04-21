@@ -32,6 +32,11 @@ export class PathArgument {
             } else if (reader.peek() === '~') {
                 reader.read();
                 currentDirectory = FileManager.getRoot();
+                if (reader.canRead()) {
+                    if (reader.peek() === '/') {
+                        reader.read();
+                    }
+                }
             } else {
                 const dirString = reader.readString();
                 const dir = currentDirectory.getDirectories().get(dirString);
