@@ -11,32 +11,18 @@ export class PathArgument {
         let currentDirectory = FileManager.getCurrentDirectory();
         while (reader.canRead()) {
             if (reader.peek() === '.') {
-                reader.read();
+                reader.skip();
                 if (reader.canRead()) {
                     if (reader.peek() === '.') {
-                        reader.read();
+                        reader.skip();
                         if (currentDirectory.parent !== null) {
                             currentDirectory = currentDirectory.parent;
                         }
-                        if (reader.canRead()) {
-                            if (reader.peek() === '/') {
-                                reader.read();
-                            }
-                        }
-                    } else if (reader.peek() === '/') {
-                        reader.skip();
-                    } else {
-                        throw new IllegalArgumentError("Expected '.' or '/'.");
                     }
                 }
             } else if (reader.peek() === '~') {
-                reader.read();
+                reader.skip();
                 currentDirectory = FileManager.getRoot();
-                if (reader.canRead()) {
-                    if (reader.peek() === '/') {
-                        reader.read();
-                    }
-                }
             } else {
                 const dirString = reader.readString();
                 const dir = currentDirectory.getDirectories().get(dirString);
@@ -44,10 +30,10 @@ export class PathArgument {
                     throw new IllegalArgumentError("Directory does not exist.");
                 }
                 currentDirectory = dir;
-                if (reader.canRead()) {
-                    if (reader.peek() === '/') {
-                        reader.read();
-                    }
+            }
+            if (reader.canRead()) {
+                if (reader.peek() === '/') {
+                    reader.skip();
                 }
             }
         }
