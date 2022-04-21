@@ -95,7 +95,7 @@ export class StringReader {
         const number = parseInt(this.string.substring(start, this.cursor));
         if (!number) {
             this.cursor = start;
-            throw new CommandSyntaxError(this);
+            throw new CommandSyntaxError("Invalid integer.");
         }
         return number;
     }
@@ -108,7 +108,7 @@ export class StringReader {
         const number = parseFloat(this.string.substring(start, this.cursor));
         if (!number) {
             this.cursor = start;
-            throw new CommandSyntaxError(this);
+            throw new CommandSyntaxError("Invalid float.");
         }
         return number;
     }
@@ -127,7 +127,7 @@ export class StringReader {
         }
         const next = this.peek();
         if (!StringReader.#isQuotedStringStart(next)) {
-            throw new CommandSyntaxError(this);
+            throw new CommandSyntaxError("Expected an opening quote.");
         }
         this.skip();
         return this.readStringUntil(next);
@@ -154,7 +154,7 @@ export class StringReader {
                 result += char;
             }
         }
-        throw new CommandSyntaxError(this);
+        throw new CommandSyntaxError("Couldn't read string.");
     }
 
     readString() {
@@ -181,13 +181,13 @@ export class StringReader {
             return false;
         } else {
             this.cursor = start;
-            throw new CommandSyntaxError(this);
+            throw new CommandSyntaxError(`Invalid boolean '${value}'.`);
         }
     }
 
     expect(char) {
         if (!this.canRead() || this.peek() !== char) {
-            throw new CommandSyntaxError(this);
+            throw new CommandSyntaxError(`Expected '${char}'.`);
         }
         this.skip();
     }

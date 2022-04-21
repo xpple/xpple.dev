@@ -7,21 +7,35 @@ export /*abstract*/ class Command {
      */
     static commands = new Map();
 
+    /**
+     * @param {Command} command
+     */
     static register(command) {
-        if (!(command instanceof Command)) {
-            return;
+        if (command instanceof Command) {
+            Command.commands.set(command.rootLiteral, command);
+        } else {
+            throw new TypeError();
         }
-        Command.commands.set(command.rootLiteral, command);
     }
 
+    /**
+     * @param {String} string
+     */
     sendFeedback(string) {
         CommandHandler.sendFeedback(string);
     }
 
+    /**
+     * @param {String} string
+     */
     sendError(string) {
         CommandHandler.sendError(string);
     }
 
+    /**
+     * @param {String} rootLiteral
+     * @param {String} description
+     */
     constructor(rootLiteral, description) {
         if (this.constructor === Command) {
             throw new Error("Object of Abstract Class cannot be created");

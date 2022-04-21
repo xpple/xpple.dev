@@ -8,6 +8,6 @@ export class ClearCommand extends Command {
     }
 
     async execute(reader) {
-        CommandHandler.cliContainer.querySelectorAll("span, br").forEach(e => e.remove());
+        CommandHandler.cliContainer.querySelectorAll(":scope > :is(span, br)").forEach(e => e.remove());
     }
 }

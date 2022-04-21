@@ -9,6 +9,10 @@ import {ClearCommand} from "./commands/clear-command.js";
 import {UserAgentCommand} from "./commands/user-agent-command.js";
 import {IpCommand} from "./commands/ip-command.js";
 import {EchoCommand} from "./commands/echo-command.js";
+import {CdCommand} from "./commands/cd-command.js";
+import {MkDirCommand} from "./commands/mkdir-command.js";
+import {LsCommand} from "./commands/ls-command.js";
+import {TouchCommand} from "./commands/touch-command.js";
 
 export class CommandHandler {
 
@@ -23,11 +27,11 @@ export class CommandHandler {
     /**
      * @type {HTMLInputElement}
      */
-    static #inputField = undefined;
+    static inputField = undefined;
     /**
      * @type {String}
      */
-    static #prompt = undefined;
+    static prompt = undefined;
     /**
      * @type {Array<String>}
      */
@@ -45,25 +49,20 @@ export class CommandHandler {
             console.error("Input container doesn't exist.");
             return;
         }
-        this.#inputField = document.getElementById("input-field");
-        if (this.#inputField === null) {
+        this.inputField = document.getElementById("input-field");
+        if (this.inputField === null) {
             console.error("Input field doesn't exist.");
             return;
         }
-        this.#inputField.focus();
-        const labels = this.#inputField.labels;
-        if (labels.length !== 1) {
-            console.error("Too many labels were associated to this input field.");
-            return;
-        }
-        this.#prompt = labels[0].innerText;
-        this.#inputField.addEventListener('keydown', async e => {
+        this.inputField.focus();
+        this.inputField.addEventListener('keydown', async e => {
             switch (e.key) {
                 case "Enter":
                     if (e.shiftKey) {
                         break;
                     }
-                    const value = this.#inputField.value;
+                    const value = this.inputField.value;
+                    this.#inputContainer.style.visibility = "hidden";
                     try {
                         await this.#handleCommand(value);
                     } catch (e) {
@@ -74,21 +73,23 @@ export class CommandHandler {
                             console.error(e);
                         }
                     }
+                    this.#inputContainer.style.visibility = "visible";
+                    this.inputField.focus();
                     this.#historyIndex = this.#history.length;
                     break;
                 case "ArrowUp":
                     if (this.#historyIndex <= 0) {
                         break;
                     }
-                    this.#inputField.value = this.#history[--this.#historyIndex];
-                    this.#inputField.focus();
+                    this.inputField.value = this.#history[--this.#historyIndex];
+                    this.inputField.focus();
                     break;
                 case "ArrowDown":
                     if (this.#historyIndex >= this.#history.length - 1) {
                         break;
                     }
-                    this.#inputField.value = this.#history[++this.#historyIndex];
-                    this.#inputField.focus();
+                    this.inputField.value = this.#history[++this.#historyIndex];
+                    this.inputField.focus();
                     break;
             }
         });
@@ -112,10 +113,14 @@ export class CommandHandler {
         this.#inputContainer.insertAdjacentHTML('beforebegin', `<span style="color: red;">${string}</span><br>`);
     }
 
+    /**
+     * @param {String} commandString
+     * @returns {Promise<void>}
+     */
     static async #handleCommand(commandString) {
-        this.#inputField.value = "";
+        this.inputField.value = "";
         const cleanCommandString = this.sanitiseString(commandString);
-        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.#prompt + cleanCommandString}</span><br>`);
+        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.prompt + cleanCommandString}</span><br>`);
         if (commandString === "") {
             return;
         }
@@ -127,12 +132,13 @@ export class CommandHandler {
             throw new UnknownCommandError(cleanCommandString);
         }
         reader.skipWhitespace();
-        this.#inputContainer.style.visibility = "hidden";
         await command.execute(reader);
-        this.#inputContainer.style.visibility = "visible";
-        this.#inputField.focus();
     }
 
+    /**
+     * @param {String} string
+     * @returns {String}
+     */
     static sanitiseString(string) {
         const element = document.createElement("div");
         element.innerText = string;
@@ -147,5 +153,9 @@ export class CommandHandler {
         Command.register(new UserAgentCommand());
         Command.register(new IpCommand());
         Command.register(new EchoCommand());
+        Command.register(new CdCommand());
+        Command.register(new MkDirCommand());
+        Command.register(new LsCommand());
+        Command.register(new TouchCommand());
     }
 }
