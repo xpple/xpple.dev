@@ -149,17 +149,17 @@ export class CommandHandler {
     }
 
     static #registerCommands() {
-        Command.register(new XppleCommand());
-        Command.register(new DiscordCommand());
-        Command.register(new HelpCommand());
-        Command.register(new ClearCommand());
-        Command.register(new UserAgentCommand());
-        Command.register(new IpCommand());
-        Command.register(new EchoCommand());
-        Command.register(new CdCommand());
-        Command.register(new MkDirCommand());
-        Command.register(new LsCommand());
-        Command.register(new TouchCommand());
         Command.register(new CatCommand());
+        Command.register(new CdCommand());
+        Command.register(new ClearCommand());
+        Command.register(new DiscordCommand());
+        Command.register(new EchoCommand());
+        Command.register(new HelpCommand());
+        Command.register(new IpCommand());
+        Command.register(new LsCommand());
+        Command.register(new MkDirCommand());
+        Command.register(new TouchCommand());
+        Command.register(new UserAgentCommand());
+        Command.register(new XppleCommand());
     }
 }
