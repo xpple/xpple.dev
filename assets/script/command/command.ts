@@ -6,11 +6,7 @@ export abstract class Command {
     public static commands: Map<string, Command> = new Map<string, Command>();
 
     public static register(command: Command): void {
-        if (command instanceof Command) {
-            Command.commands.set(command.rootLiteral, command);
-        } else {
-            throw new TypeError();
-        }
+        Command.commands.set(command.rootLiteral, command);
     }
 
     public sendFeedback(string: string): void {
