@@ -2,11 +2,11 @@ import {CommandSyntaxError} from "./command-syntax-error.js";
 
 export class UnknownCommandError extends CommandSyntaxError {
 
-    constructor(commandString) {
+    public constructor(commandString: string) {
         super(`Unknown command '${commandString}'. Execute 'help' for a list of commands.`);
     }
 
-    getName() {
+    public override getName(): string {
         return "UnknownCommandError";
     }
 }

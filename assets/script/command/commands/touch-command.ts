@@ -2,14 +2,15 @@ import {Command} from "../command.js";
 import {FileManager} from "../file_manager/file-manager.js";
 import {File} from "../file_manager/file.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
+import {StringReader} from "../string-reader.js";
 
 export class TouchCommand extends Command {
 
-    constructor() {
+    public constructor() {
         super("touch", "Create a new file.");
     }
 
-    async execute(reader) {
+    public override async execute(reader: StringReader): Promise<void> {
         if (reader.canRead()) {
             const fileString = reader.readString();
             const file = new File(fileString, FileManager.getCurrentDirectory());

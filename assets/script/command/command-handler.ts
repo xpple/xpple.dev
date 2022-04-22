@@ -18,53 +18,46 @@ import {CatCommand} from "./commands/cat-command.js";
 
 export class CommandHandler {
 
-    /**
-     * @type {HTMLDivElement}
-     */
-    static cliContainer = undefined;
-    /**
-     * @type {HTMLDivElement}
-     */
-    static #inputContainer = undefined;
-    /**
-     * @type {HTMLInputElement}
-     */
-    static inputField = undefined;
-    /**
-     * @type {String}
-     */
-    static prompt = undefined;
-    /**
-     * @type {Array<String>}
-     */
-    static #history = [];
+    static cliContainer: HTMLElement;
+    static #inputContainer: HTMLElement;
+    static inputField: HTMLInputElement;
+    static prompt: string;
+    static #history: Array<string> = new Array<string>();
     static #historyIndex = 0;
 
-    static init() {
-        this.cliContainer = document.getElementById("cli-container");
-        if (this.cliContainer === null) {
-            console.error("CLI container doesn't exist.");
-            return;
+    static init(): void {
+        const cliContainer = document.getElementById("cli-container");
+        if (cliContainer === null) {
+            return console.error("CLI container doesn't exist.");
         }
-        this.#inputContainer = document.getElementById("input-container");
-        if (this.#inputContainer === null) {
-            console.error("Input container doesn't exist.");
-            return;
+
+        const inputContainer = document.getElementById("input-container");
+        if (inputContainer === null) {
+            return console.error("Input container doesn't exist.");
         }
-        this.inputField = document.getElementById("input-field");
-        if (this.inputField === null) {
-            console.error("Input field doesn't exist.");
-            return;
+
+        const inputField = document.getElementById("input-field");
+        if (inputField === null) {
+            return console.error("Input field doesn't exist.");
         }
-        this.inputField.focus();
-        this.inputField.addEventListener('keydown', async e => {
+
+        if (!(inputField instanceof HTMLInputElement)) {
+            return console.error("Input field is not an input element.");;
+        }
+
+        this.cliContainer = cliContainer;
+        this.#inputContainer = inputContainer;
+        this.inputField = inputField;
+
+        inputField.focus();
+        inputField.addEventListener('keydown', async e => {
             switch (e.key) {
                 case "Enter":
                     if (e.shiftKey) {
                         break;
                     }
-                    const value = this.inputField.value;
-                    this.#inputContainer.style.visibility = "hidden";
+                    const value = inputField.value;
+                    inputContainer.style.visibility = "hidden";
                     try {
                         await this.#handleCommand(value);
                     } catch (e) {
@@ -76,23 +69,23 @@ export class CommandHandler {
                         }
                     }
                     WebStorageManager.saveDirectoriesAndFiles();
-                    this.#inputContainer.style.visibility = "visible";
-                    this.inputField.focus();
+                    inputContainer.style.visibility = "visible";
+                    inputField.focus();
                     this.#historyIndex = this.#history.length;
                     break;
                 case "ArrowUp":
                     if (this.#historyIndex <= 0) {
                         break;
                     }
-                    this.inputField.value = this.#history[--this.#historyIndex];
-                    this.inputField.focus();
+                    inputField.value = this.#history[--this.#historyIndex];
+                    inputField.focus();
                     break;
                 case "ArrowDown":
                     if (this.#historyIndex >= this.#history.length - 1) {
                         break;
                     }
-                    this.inputField.value = this.#history[++this.#historyIndex];
-                    this.inputField.focus();
+                    inputField.value = this.#history[++this.#historyIndex];
+                    inputField.focus();
                     break;
             }
         });
@@ -100,27 +93,15 @@ export class CommandHandler {
         this.#registerCommands();
     }
 
-    /**
-     * Send feedback to the screen. Sanitise the input if needed.
-     * @param {HTMLElement | String} string
-     */
-    static sendFeedback(string) {
-        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span style="color: white;">${string}</span><br>`);
+    public static sendFeedback(string: HTMLElement | string): void {
+        this.#inputContainer?.insertAdjacentHTML('beforebegin', `<span style="color: white;">${string}</span><br>`);
     }
 
-    /**
-     * Send an error to the screen. Sanitise the input if needed.
-     * @param {HTMLElement | String} string
-     */
-    static sendError(string) {
-        this.#inputContainer.insertAdjacentHTML('beforebegin', `<span style="color: red;">${string}</span><br>`);
+    public static sendError(string: HTMLElement | string): void {
+        this.#inputContainer?.insertAdjacentHTML('beforebegin', `<span style="color: red;">${string}</span><br>`);
     }
 
-    /**
-     * @param {String} commandString
-     * @returns {Promise<void>}
-     */
-    static async #handleCommand(commandString) {
+    static async #handleCommand(commandString: string): Promise<void> {
         this.inputField.value = "";
         const cleanCommandString = this.sanitiseString(commandString);
         this.#inputContainer.insertAdjacentHTML('beforebegin', `<span>${this.prompt + cleanCommandString}</span><br>`);
@@ -138,17 +119,13 @@ export class CommandHandler {
         await command.execute(reader);
     }
 
-    /**
-     * @param {String} string
-     * @returns {String}
-     */
-    static sanitiseString(string) {
+    public static sanitiseString(string: string): string {
         const element = document.createElement("div");
         element.innerText = string;
         return element.innerHTML;
     }
 
-    static #registerCommands() {
+    static #registerCommands(): void {
         Command.register(new CatCommand());
         Command.register(new CdCommand());
         Command.register(new ClearCommand());

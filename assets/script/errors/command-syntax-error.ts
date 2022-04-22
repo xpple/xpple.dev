@@ -1,10 +1,10 @@
 export class CommandSyntaxError extends Error {
 
-    constructor(message) {
+    public constructor(message: string) {
         super(message);
     }
 
-    getName() {
+    public getName(): string {
         return "CommandSyntaxError";
     }
 }

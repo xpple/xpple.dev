@@ -2,11 +2,11 @@ import {CommandSyntaxError} from "./command-syntax-error.js";
 
 export class IllegalArgumentError extends CommandSyntaxError {
 
-    constructor(argument) {
+    public constructor(argument: string) {
         super(`Illegal argument: ${argument}`);
     }
 
-    getName() {
+    public override getName(): string {
         return "IllegalArgumentError";
     }
 }

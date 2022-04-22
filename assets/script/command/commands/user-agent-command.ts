@@ -6,7 +6,7 @@ export class UserAgentCommand extends Command {
         super("useragent", "Get your current user agent.");
     }
 
-    async execute(reader) {
+    public override async execute(): Promise<void> {
         this.sendFeedback(navigator.userAgent);
     }
 }

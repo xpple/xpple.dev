@@ -2,14 +2,15 @@ import {Command} from "../command.js";
 import {FileManager} from "../file_manager/file-manager.js";
 import {Directory} from "../file_manager/directory.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
+import {StringReader} from "../string-reader.js";
 
 export class MkDirCommand extends Command {
 
-    constructor() {
+    public constructor() {
         super("mkdir", "Create a new directory.");
     }
 
-    async execute(reader) {
+    public override async execute(reader: StringReader): Promise<void> {
         if (reader.canRead()) {
             const dirString = reader.readString();
             const dir = new Directory(dirString, FileManager.getCurrentDirectory());

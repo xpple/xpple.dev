@@ -1,13 +1,14 @@
 import {Command} from "../command.js";
 import {UnknownCommandError} from "../../errors/unknown-command-error.js";
+import {StringReader} from "../string-reader.js";
 
 export class HelpCommand extends Command {
 
-    constructor() {
+    public constructor() {
         super("help", "Get help.");
     }
 
-    async execute(reader) {
+    public override async execute(reader: StringReader): Promise<void> {
         if (reader.canRead()) {
             const commandString = reader.readString();
             let command = Command.commands.get(commandString);

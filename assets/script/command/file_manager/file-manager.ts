@@ -5,61 +5,58 @@ import {File} from "./file.js";
 
 export class FileManager {
 
-    /**
-     * @type {Directory}
-     */
-    static #root = undefined;
-    /**
-     * @type {Directory}
-     */
-    static #currentDirectory = undefined;
+    static #root: Directory;
+    static #currentDirectory: Directory;
 
-    static init() {
-        this.#root = new Directory("~", null, true);
+    public static init(): void {
+        this.#root = new Directory("~", undefined, true);
         this.setCurrentDirectory(this.#root);
     }
 
-    /**
-     * @returns {Directory}
-     */
-    static getRoot() {
+    public static getRoot(): Directory {
         return this.#root;
     }
 
-    /**
-     * @returns {Directory}
-     */
-    static getCurrentDirectory() {
+    public static getCurrentDirectory(): Directory {
         return this.#currentDirectory;
     }
 
-    /**
-     * @param {Directory} directory
-     */
-    static setCurrentDirectory(directory) {
+    public static setCurrentDirectory(directory: Directory) {
         if (directory instanceof Directory) {
             this.#currentDirectory = directory;
             let dirString = directory.name;
-            while (directory.parent !== null) {
+
+            while (directory.parent !== undefined) {
                 directory = directory.parent;
                 dirString = directory.name + '/' + dirString;
             }
-            const labels = CommandHandler.inputField.labels;
+
+            const labels = CommandHandler.inputField.labels ?? [];
             if (labels.length !== 1) {
                 throw new Error("Too many labels were associated to this input field.");
             }
-            labels[0].querySelector("span").textContent = dirString;
-            CommandHandler.prompt = labels[0].textContent;
+
+            const label = labels[0];
+
+            const span = label.querySelector("span");
+            if (span === null) {
+                throw new Error("No span associated with label");
+            }
+
+            span.textContent = dirString;
+
+            const textContent = label.textContent;
+            if (textContent === null) {
+                throw new Error("No text in label");
+            }
+
+            CommandHandler.prompt = textContent;
         } else {
             throw new TypeError();
         }
     }
 
-    /**
-     * @param {Directory} directory
-     * @returns {Object}
-     */
-    static serialise(directory) {
+    public static serialise(directory: Directory): object {
         let contents = {};
         for (const dir of directory.getDirectories().values()) {
             const tmp = this.serialise(dir);
@@ -75,11 +72,7 @@ export class FileManager {
         };
     }
 
-    /**
-     * @param {Object} object
-     * @param {Directory} directory - The directory to deserialise into.
-     */
-    static deserialise(object, directory) {
+    public static deserialise(object: object, directory: Directory) {
         for (const [key, value] of Object.entries(object)) {
             if (isString(value)) {
                 const file = new File(key, directory);
