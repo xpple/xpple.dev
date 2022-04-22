@@ -22,38 +22,34 @@ export class FileManager {
     }
 
     public static setCurrentDirectory(directory: Directory) {
-        if (directory instanceof Directory) {
-            this.#currentDirectory = directory;
-            let dirString = directory.name;
+        this.#currentDirectory = directory;
+        let dirString = directory.name;
 
-            while (directory.parent !== undefined) {
-                directory = directory.parent;
-                dirString = directory.name + '/' + dirString;
-            }
-
-            const labels = CommandHandler.inputField.labels ?? [];
-            if (labels.length !== 1) {
-                throw new Error("Too many labels were associated to this input field.");
-            }
-
-            const label = labels[0];
-
-            const span = label.querySelector("span");
-            if (span === null) {
-                throw new Error("No span associated with label");
-            }
-
-            span.textContent = dirString;
-
-            const textContent = label.textContent;
-            if (textContent === null) {
-                throw new Error("No text in label");
-            }
-
-            CommandHandler.prompt = textContent;
-        } else {
-            throw new TypeError();
+        while (directory.parent !== undefined) {
+            directory = directory.parent;
+            dirString = directory.name + '/' + dirString;
         }
+
+        const labels = CommandHandler.inputField.labels ?? [];
+        if (labels.length !== 1) {
+            throw new Error("Too many labels were associated to this input field.");
+        }
+
+        const label = labels[0];
+
+        const span = label.querySelector("span");
+        if (span === null) {
+            throw new Error("No span associated with label");
+        }
+
+        span.textContent = dirString;
+
+        const textContent = label.textContent;
+        if (textContent === null) {
+            throw new Error("No text in label");
+        }
+
+        CommandHandler.prompt = textContent;
     }
 
     public static serialise(directory: Directory): object {

@@ -1,5 +1,4 @@
 import {File} from "./file.js";
-import {isString} from "../utils.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
 
 export class Directory {
@@ -13,23 +12,10 @@ export class Directory {
     #isRoot: boolean = false;
 
     public constructor(public name: string, public parent?: Directory, isRoot: boolean = false) {
-        if (isRoot) {
-            this.#isRoot = true;
-            return;
-        }
-        if (isString(name)) {
-            if (Directory.#pattern.test(name)) {
-                this.name = name;
-            } else {
-                throw new IllegalArgumentError("Directory name is invalid.");
-            }
-        } else {
-            throw new TypeError();
-        }
-        if (parent instanceof Directory) {
-            this.parent = parent;
-        } else {
-            throw new TypeError();
+        this.#isRoot = isRoot;
+
+        if (!Directory.#pattern.test(name)) {
+            throw new IllegalArgumentError("Directory name is invalid.");
         }
     }
 
@@ -46,47 +32,38 @@ export class Directory {
     }
 
     public addFile(file: File): boolean {
-        if (file instanceof File) {
-            if (this.#files.has(file.name)) {
-                return false;
-            }
-            this.#files.set(file.name, file);
-            return true;
+        if (this.#files.has(file.name)) {
+            return false;
         }
-        throw new TypeError();
+
+        this.#files.set(file.name, file);
+        return true;
     }
 
     public addDirectory(directory: Directory): boolean {
-        if (directory instanceof Directory) {
-            if (directory.isRoot()) {
-                return false;
-            }
-            if (this.#directories.has(directory.name)) {
-                return false;
-            }
-            this.#directories.set(directory.name, directory);
-            return true;
+        if (directory.isRoot()) {
+            return false;
         }
-        throw new TypeError();
+        if (this.#directories.has(directory.name)) {
+            return false;
+        }
+        this.#directories.set(directory.name, directory);
+        return true;
     }
 
     public deleteFile(file: File | string): boolean {
         if (file instanceof File) {
             return this.#files.delete(file.name);
         }
-        if (isString(file)) {
-            return this.#files.delete(file);
-        }
-        throw new TypeError();
+
+        return this.#files.delete(file);
     }
 
     public deleteDirectory(directory: Directory | string): boolean {
         if (directory instanceof Directory) {
             return this.#directories.delete(directory.name);
         }
-        if (isString(directory)) {
-            return this.#directories.delete(directory);
-        }
-        throw new TypeError();
+
+        return this.#directories.delete(directory);
     }
 }
