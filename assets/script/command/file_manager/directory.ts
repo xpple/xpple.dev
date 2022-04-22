@@ -1,7 +1,8 @@
 import {File} from "./file.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
+import {INode} from "./inode.js";
 
-export class Directory {
+export class Directory extends INode {
 
     static #pattern: RegExp = /^[a-zA-Z ]+$/;
 
@@ -11,10 +12,12 @@ export class Directory {
 
     #isRoot: boolean = false;
 
-    public constructor(public name: string, public parent?: Directory, isRoot: boolean = false) {
+    public constructor(name: string, parentDirectory?: Directory, isRoot: boolean = false) {
+        super(name, parentDirectory)
+
         this.#isRoot = isRoot;
 
-        if (!Directory.#pattern.test(name)) {
+        if (!Directory.#pattern.test(name) && !isRoot) {
             throw new IllegalArgumentError("Directory name is invalid.");
         }
     }
