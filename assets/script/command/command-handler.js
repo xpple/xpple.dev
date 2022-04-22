@@ -13,6 +13,7 @@ import {CdCommand} from "./commands/cd-command.js";
 import {MkDirCommand} from "./commands/mkdir-command.js";
 import {LsCommand} from "./commands/ls-command.js";
 import {TouchCommand} from "./commands/touch-command.js";
+import {WebStorageManager} from "../web-storage-manager.js";
 
 export class CommandHandler {
 
@@ -73,6 +74,7 @@ export class CommandHandler {
                             console.error(e);
                         }
                     }
+                    WebStorageManager.saveDirectoriesAndFiles();
                     this.#inputContainer.style.visibility = "visible";
                     this.inputField.focus();
                     this.#historyIndex = this.#history.length;

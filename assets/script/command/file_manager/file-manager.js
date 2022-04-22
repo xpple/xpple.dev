@@ -1,5 +1,7 @@
 import {Directory} from "./directory.js";
 import {CommandHandler} from "../command-handler.js";
+import {isString} from "../utils.js";
+import {File} from "./file.js";
 
 export class FileManager {
 
@@ -50,6 +52,44 @@ export class FileManager {
             CommandHandler.prompt = labels[0].textContent;
         } else {
             throw new TypeError();
+        }
+    }
+
+    /**
+     * @param {Directory} directory
+     * @returns {Object}
+     */
+    static serialise(directory) {
+        let contents = {};
+        for (const dir of directory.getDirectories().values()) {
+            const tmp = this.serialise(dir);
+            contents = {...contents, ...tmp};
+        }
+        for (const [name, file] of directory.getFiles()) {
+            contents = {...contents, ...{[name]: file.getContent()}};
+        }
+        return {
+            [directory.name]: {
+                ...contents
+            }
+        };
+    }
+
+    /**
+     * @param {Object} object
+     * @param {Directory} directory - The directory to deserialise into.
+     */
+    static deserialise(object, directory) {
+        for (const [key, value] of Object.entries(object)) {
+            if (isString(value)) {
+                const file = new File(key, directory);
+                file.write(value);
+                directory.addFile(file);
+            } else {
+                const dir = new Directory(key, directory);
+                this.deserialise(value, dir);
+                directory.addDirectory(dir);
+            }
         }
     }
 }
