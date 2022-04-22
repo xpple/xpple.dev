@@ -4,21 +4,11 @@ import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
 
 export class File {
 
-    /**
-     * @type {RegExp}
-     */
-    static #pattern = /^[a-zA-Z ]+\.[a-zA-Z]+$/;
+    static #pattern: RegExp = /^[a-zA-Z ]+\.[a-zA-Z]+$/;
 
-    /**
-     * @type {String}
-     */
-    #content = "";
+    #content: string = "";
 
-    /**
-     * @param {String} name
-     * @param {Directory} parent
-     */
-    constructor(name, parent) {
+    public constructor(public name: string, public parent: Directory) {
         if (isString(name)) {
             if (File.#pattern.test(name)) {
                 this.name = name;
@@ -35,22 +25,15 @@ export class File {
         }
     }
 
-    /**
-     * @returns {String}
-     */
-    getContent() {
+    public getContent(): string {
         return this.#content;
     }
 
-    /**
-     * @param {String | Number} string
-     */
-    write(string) {
+    public write(string: string | number) {
         if (isString(string)) {
             this.#content = string;
             return;
-        }
-        if (string instanceof Number) {
+        } else {
             this.#content = string.toString(10);
         }
     }

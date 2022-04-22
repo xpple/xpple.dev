@@ -1,13 +1,11 @@
 import {FileManager} from "../file_manager/file-manager.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
+import {StringReader} from "../string-reader.js";
+import {Directory} from "../file_manager/directory.js";
 
 export class PathArgument {
 
-    /**
-     * @param {StringReader} reader
-     * @returns {Directory}
-     */
-    parse(reader) {
+    public parse(reader: StringReader): Directory {
         let currentDirectory = FileManager.getCurrentDirectory();
         while (reader.canRead()) {
             if (reader.peek() === '.') {
@@ -15,7 +13,7 @@ export class PathArgument {
                 if (reader.canRead()) {
                     if (reader.peek() === '.') {
                         reader.skip();
-                        if (currentDirectory.parent !== null) {
+                        if (currentDirectory.parent !== undefined) {
                             currentDirectory = currentDirectory.parent;
                         }
                     }

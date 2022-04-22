@@ -1,14 +1,15 @@
 import {Command} from "../command.js";
 import {FileManager} from "../file_manager/file-manager.js";
 import {PathArgument} from "../arguments/path-argument.js";
+import {StringReader} from "../string-reader.js";
 
 export class CdCommand extends Command {
 
-    constructor() {
+    public constructor() {
         super("cd", "Go to a directory.");
     }
 
-    async execute(reader) {
+    public override async execute(reader: StringReader): Promise<void> {
         if (!reader.canRead()) {
             FileManager.setCurrentDirectory(FileManager.getRoot());
             return;

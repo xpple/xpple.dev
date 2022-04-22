@@ -6,19 +6,19 @@ export class StringReader {
     static #SYNTAX_DOUBLE_QUOTE = '"';
     static #SYNTAX_SINGLE_QUOTE = '\'';
 
-    static #isAllowedNumber(char) {
+    static #isAllowedNumber(char: string): boolean {
         return char >= '0' && char <= '9' || char === '.' || char === '-';
     }
 
-    static #isQuotedStringStart(char) {
+    static #isQuotedStringStart(char: string): boolean {
         return char === StringReader.#SYNTAX_DOUBLE_QUOTE || char === StringReader.#SYNTAX_SINGLE_QUOTE;
     }
 
-    static #isWhitespace(char) {
+    static #isWhitespace(char: string): boolean {
         return char === ' ' || char === '\t';
     }
 
-    static #isAllowedInUnquotedString(char) {
+    static #isAllowedInUnquotedString(char: string): boolean {
         return char >= '0' && char <= '9'
             || char >= 'A' && char <= 'Z'
             || char >= 'a' && char <= 'z'
@@ -26,68 +26,69 @@ export class StringReader {
             || char === '.' || char === '+';
     }
 
-    constructor(string) {
-        this.string = string;
+    public cursor: number;
+
+    public constructor(public string: string) {
         this.cursor = 0;
     }
 
-    getString() {
+    public getString(): string {
         return this.string;
     }
 
-    setCursor(cursor) {
+    public setCursor(cursor: number) {
         this.cursor = cursor;
     }
 
-    getRemainingLength() {
+    public getRemainingLength(): number {
         return this.string.length - this.cursor;
     }
 
-    getTotalLength() {
+    public getTotalLength(): number {
         return this.string.length;
     }
 
-    getCursor() {
+    public getCursor(): number {
         return this.cursor;
     }
 
-    getRead() {
+    public getRead(): string {
         return this.string.substring(0, this.cursor);
     }
 
-    getRemaining() {
+    public getRemaining(): string {
         return this.string.substring(this.cursor);
     }
 
-    canRead(length) {
+    public canRead(length?: number): boolean {
         if (length) {
             return this.cursor + length <= this.string.length;
         }
         return this.cursor + 1 <= this.string.length;
     }
 
-    peek(offset) {
+    public peek(offset?: number): string {
         if (offset) {
             return this.string.charAt(this.cursor + offset);
         }
         return this.string.charAt(this.cursor);
     }
 
-    read() {
+    public read(): string {
         return this.string.charAt(this.cursor++);
     }
 
-    skip() {
+    public skip(): void {
         this.cursor++;
     }
 
-    skipWhitespace() {
+    public skipWhitespace(): void {
         while (this.canRead() && StringReader.#isWhitespace(this.peek())) {
             this.skip();
         }
     }
 
-    readInt() {
+    public readInt(): number {
         const start = this.cursor;
         while (this.canRead() && StringReader.#isAllowedNumber(this.peek())) {
             this.skip();
@@ -100,7 +101,7 @@ export class StringReader {
         return number;
     }
 
-    readFloat() {
+    public readFloat(): number {
         const start = this.cursor;
         while (this.canRead() && StringReader.#isAllowedNumber(this.peek())) {
             this.skip();
@@ -113,7 +114,7 @@ export class StringReader {
         return number;
     }
 
-    readUnquotedString() {
+    public readUnquotedString(): string {
         const start = this.cursor;
         while (this.canRead() && StringReader.#isAllowedInUnquotedString(this.peek())) {
             this.skip();
@@ -121,7 +122,7 @@ export class StringReader {
         return this.string.substring(start, this.cursor);
     }
 
-    readQuotedString() {
+    public readQuotedString(): string {
         if (!this.canRead()) {
             return "";
         }
@@ -133,7 +134,7 @@ export class StringReader {
         return this.readStringUntil(next);
     }
 
-    readStringUntil(terminator) {
+    public readStringUntil(terminator: string): string {
         let result = "";
         let escaped = false;
         while (this.canRead()) {
@@ -144,7 +145,7 @@ export class StringReader {
                     escaped = false;
                 } else {
                     this.setCursor(this.getCursor() - 1);
-                    throw new CommandSyntaxError(this);
+                    throw new CommandSyntaxError(this.string);
                 }
             } else if (char === StringReader.#SYNTAX_ESCAPE) {
                 escaped = true;
@@ -157,7 +158,7 @@ export class StringReader {
         throw new CommandSyntaxError("Couldn't read string.");
     }
 
-    readString() {
+    public readString(): string {
         if (!this.canRead()) {
             return "";
         }
@@ -169,11 +170,11 @@ export class StringReader {
         return this.readUnquotedString();
     }
 
-    readBoolean() {
+    public readBoolean(): boolean {
         const start = this.cursor;
         const value = this.readString();
         if (!value) {
-            throw new CommandSyntaxError(this);
+            throw new CommandSyntaxError(this.string);
         }
         if (value === "true") {
             return true;
@@ -185,7 +186,7 @@ export class StringReader {
         }
     }
 
-    expect(char) {
+    public expect(char: string): void {
         if (!this.canRead() || this.peek() !== char) {
             throw new CommandSyntaxError(`Expected '${char}'.`);
         }

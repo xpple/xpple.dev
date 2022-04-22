@@ -4,35 +4,16 @@ import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
 
 export class Directory {
 
-    /**
-     * @type {RegExp}
-     */
-    static #pattern = /^[a-zA-Z ]+$/;
+    static #pattern: RegExp = /^[a-zA-Z ]+$/;
 
-    /**
-     * @type {Map<String, File>}
-     */
-    #files = new Map();
+    #files: Map<string, File> = new Map();
 
-    /**
-     * @type {Map<String, Directory>}
-     */
-    #directories = new Map();
+    #directories: Map<string, Directory> = new Map();
 
-    /**
-     * @type {Boolean}
-     */
-    #isRoot = false;
+    #isRoot: boolean = false;
 
-    /**
-     * @param {String} name
-     * @param {Directory} parent
-     * @param {Boolean} [isRoot=false]
-     */
-    constructor(name, parent, isRoot = false) {
+    public constructor(public name: string, public parent?: Directory, isRoot: boolean = false) {
         if (isRoot) {
-            this.name = name;
-            this.parent = parent;
             this.#isRoot = true;
             return;
         }
@@ -52,32 +33,19 @@ export class Directory {
         }
     }
 
-    /**
-     * @returns {Map<String, File>}
-     */
-    getFiles() {
+    public getFiles(): Map<string, File> {
         return this.#files;
     }
 
-    /**
-     * @returns {Map<String, Directory>}
-     */
-    getDirectories() {
+    public getDirectories(): Map<string, Directory> {
         return this.#directories;
     }
 
-    /**
-     * @returns {Boolean}
-     */
-    isRoot() {
+    public isRoot(): boolean {
         return this.#isRoot;
     }
 
-    /**
-     * @param {File} file
-     * @returns {Boolean}
-     */
-    addFile(file) {
+    public addFile(file: File): boolean {
         if (file instanceof File) {
             if (this.#files.has(file.name)) {
                 return false;
@@ -88,11 +56,7 @@ export class Directory {
         throw new TypeError();
     }
 
-    /**
-     * @param {Directory} directory
-     * @returns {Boolean}
-     */
-    addDirectory(directory) {
+    public addDirectory(directory: Directory): boolean {
         if (directory instanceof Directory) {
             if (directory.isRoot()) {
                 return false;
@@ -106,11 +70,7 @@ export class Directory {
         throw new TypeError();
     }
 
-    /**
-     * @param {File | String} file
-     * @returns {Boolean}
-     */
-    deleteFile(file) {
+    public deleteFile(file: File | string): boolean {
         if (file instanceof File) {
             return this.#files.delete(file.name);
         }
@@ -120,11 +80,7 @@ export class Directory {
         throw new TypeError();
     }
 
-    /**
-     * @param {Directory | String} directory
-     * @returns {Boolean}
-     */
-    deleteDirectory(directory) {
+    public deleteDirectory(directory: Directory | string): boolean {
         if (directory instanceof Directory) {
             return this.#directories.delete(directory.name);
         }

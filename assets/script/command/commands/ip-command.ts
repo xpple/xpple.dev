@@ -3,11 +3,11 @@ import {CommandHandler} from "../command-handler.js";
 
 export class IpCommand extends Command {
 
-    constructor() {
+    public constructor() {
         super("ip", "Get your IP address.");
     }
 
-    async execute(reader) {
+    public override async execute(): Promise<void> {
         const text = await (await fetch("https://api.ipify.org")).text();
         this.sendFeedback(CommandHandler.sanitiseString(text));
     }

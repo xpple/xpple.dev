@@ -3,11 +3,11 @@ import {CommandHandler} from "../command-handler.js";
 
 export class ClearCommand extends Command {
 
-    constructor() {
+    public constructor() {
         super("clear", "Clear the screen.");
     }
 
-    async execute(reader) {
+    public override async execute(): Promise<void> {
         CommandHandler.cliContainer.querySelectorAll(":scope > :is(span, br)").forEach(e => e.remove());
     }
 }

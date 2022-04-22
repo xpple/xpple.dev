@@ -2,11 +2,11 @@ import {Command} from "../command.js";
 
 export class XppleCommand extends Command {
 
-    constructor() {
+    public constructor() {
         super("xpple", "Say hi to me!");
     }
 
-    async execute(reader) {
+    public override async execute(): Promise<void> {
         this.sendFeedback("Hey!");
     }
 }
