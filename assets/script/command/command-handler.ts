@@ -16,6 +16,8 @@ import {TouchCommand} from "./commands/touch-command.js";
 import {WebStorageManager} from "../web-storage-manager.js";
 import {CatCommand} from "./commands/cat-command.js";
 import {PwdCommand} from "./commands/pwd-command.js";
+import {RmCommand} from "./commands/rm-command.js";
+import {RmDirCommand} from "./commands/rmdir-command.js";
 
 export class CommandHandler {
 
@@ -137,6 +139,8 @@ export class CommandHandler {
         Command.register(new LsCommand());
         Command.register(new MkDirCommand());
         Command.register(new PwdCommand());
+        Command.register(new RmCommand());
+        Command.register(new RmDirCommand());
         Command.register(new TouchCommand());
         Command.register(new UserAgentCommand());
         Command.register(new XppleCommand());

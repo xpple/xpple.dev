@@ -10,7 +10,7 @@ export class Directory extends INode {
 
     #directories: Map<string, Directory> = new Map();
 
-    #isRoot: boolean = false;
+    readonly #isRoot: boolean = false;
 
     public constructor(name: string, parentDirectory?: Directory, isRoot: boolean = false) {
         super(name, parentDirectory)
