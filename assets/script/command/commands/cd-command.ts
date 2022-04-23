@@ -1,5 +1,5 @@
 import {Command} from "../command.js";
-import {FileManager} from "../file_manager/file-manager.js";
+import {FileManager} from "../file_system/file-manager.js";
 import {PathArgument} from "../arguments/path-argument.js";
 import {StringReader} from "../string-reader.js";
 

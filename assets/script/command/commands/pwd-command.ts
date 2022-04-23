@@ -1,5 +1,5 @@
 import {Command} from "../command.js";
-import {FileManager} from "../file_manager/file-manager.js";
+import {FileManager} from "../file_system/file-manager.js";
 
 export class PwdCommand extends Command {
     public constructor() {

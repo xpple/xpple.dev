@@ -1,7 +1,7 @@
-import {FileManager} from "../file_manager/file-manager.js";
+import {FileManager} from "../file_system/file-manager.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
 import {StringReader} from "../string-reader.js";
-import {Directory} from "../file_manager/directory.js";
+import {Directory} from "../file_system/directory.js";
 
 export class PathArgument {
 

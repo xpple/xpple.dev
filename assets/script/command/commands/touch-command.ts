@@ -1,6 +1,6 @@
 import {Command} from "../command.js";
-import {FileManager} from "../file_manager/file-manager.js";
-import {File} from "../file_manager/file.js";
+import {FileManager} from "../file_system/file-manager.js";
+import {File} from "../file_system/file.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
 import {StringReader} from "../string-reader.js";
 
