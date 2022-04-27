@@ -1,6 +1,7 @@
 import {Command} from "../command.js";
-import {PathArgument} from "../arguments/path-argument.js";
 import {StringReader} from "../string-reader.js";
+import {ExistingDirectoryArgument} from "../arguments/existing-directory-argument.js";
+import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
 
 export class LsCommand extends Command {
 
@@ -9,12 +10,15 @@ export class LsCommand extends Command {
     }
 
     public override async execute(reader: StringReader): Promise<void> {
-        const directory = new PathArgument().parse(reader);
-        for (const dirName of directory.getDirectories().keys()) {
-            this.sendFeedback(dirName);
+        const directory = new ExistingDirectoryArgument().parse(reader);
+        if (reader.readString() === "") {
+            for (const dirName of directory.getDirectories().keys()) {
+                this.sendFeedback(dirName);
+            }
+            for (const fileName of directory.getFiles().keys()) {
+                this.sendFeedback(fileName);
+            }
         }
-        for (const fileName of directory.getFiles().keys()) {
-            this.sendFeedback(fileName);
-        }
+        throw new IllegalArgumentError("Directory does not exist.");
     }
 }

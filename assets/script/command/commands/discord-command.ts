@@ -1,4 +1,5 @@
 import {Command} from "../command.js";
+import {CommandHandler} from "../command-handler.js";
 
 export class DiscordCommand extends Command {
 
@@ -7,6 +8,6 @@ export class DiscordCommand extends Command {
     }
 
     public override async execute(): Promise<void> {
-        this.sendFeedback(`<a href="https://discord.xpple.dev/" target="_blank">https://discord.xpple.dev/</a>`);
+        CommandHandler.sendFeedback(`<a href="https://discord.xpple.dev/" target="_blank">https://discord.xpple.dev/</a>`);
     }
 }

@@ -9,6 +9,6 @@ export class IpCommand extends Command {
 
     public override async execute(): Promise<void> {
         const text = await (await fetch("https://api.ipify.org")).text();
-        this.sendFeedback(CommandHandler.sanitiseString(text));
+        this.sendFeedback(text);
     }
 }

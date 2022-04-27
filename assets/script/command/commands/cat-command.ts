@@ -1,8 +1,7 @@
 import {Command} from "../command.js";
-import {FileManager} from "../file_system/file-manager.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
-import {CommandHandler} from "../command-handler.js";
 import {StringReader} from "../string-reader.js";
+import {ExistingDirectoryArgument} from "../arguments/existing-directory-argument.js";
 
 export class CatCommand extends Command {
 
@@ -11,13 +10,14 @@ export class CatCommand extends Command {
     }
 
     public override async execute(reader: StringReader): Promise<void> {
+        const directory = new ExistingDirectoryArgument().parse(reader);
         if (reader.canRead()) {
             const fileString = reader.readString();
-            const file = FileManager.getCurrentDirectory().getFiles().get(fileString);
+            const file = directory.getFiles().get(fileString);
             if (file === undefined) {
                 throw new IllegalArgumentError("File does not exist.");
             }
-            this.sendFeedback(CommandHandler.sanitiseString(file.getContent()));
+            this.sendFeedback(file.getContent());
         } else {
             throw new IllegalArgumentError("Expected file name.");
         }

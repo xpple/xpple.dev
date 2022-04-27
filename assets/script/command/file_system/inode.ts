@@ -1,7 +1,7 @@
 import {Directory} from "./directory.js";
 
 export abstract class INode {
-    public constructor(public name: string, public parent?: Directory) {
+    protected constructor(public name: string, public parent?: Directory) {
     }
 
     public getPath(): string {

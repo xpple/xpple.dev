@@ -1,7 +1,7 @@
 import {Command} from "../command.js";
-import {FileManager} from "../file_system/file-manager.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
 import {StringReader} from "../string-reader.js";
+import {ExistingDirectoryArgument} from "../arguments/existing-directory-argument.js";
 
 export class RmCommand extends Command {
 
@@ -10,9 +10,10 @@ export class RmCommand extends Command {
     }
 
     public override async execute(reader: StringReader): Promise<void> {
+        const directory = new ExistingDirectoryArgument().parse(reader);
         if (reader.canRead()) {
             const fileString = reader.readString();
-            const success = FileManager.getCurrentDirectory().deleteFile(fileString);
+            const success = directory.deleteFile(fileString);
             if (!success) {
                 throw new IllegalArgumentError("A file with this name does not exist.");
             }

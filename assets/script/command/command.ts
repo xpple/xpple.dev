@@ -10,14 +10,14 @@ export abstract class Command {
     }
 
     public sendFeedback(string: string): void {
-        CommandHandler.sendFeedback(string);
+        CommandHandler.sendFeedback(CommandHandler.sanitiseString(string));
     }
 
     public sendError(string: string): void {
-        CommandHandler.sendError(string);
+        CommandHandler.sendError(CommandHandler.sanitiseString(string));
     }
 
-    public constructor(public rootLiteral: string, public description: string) {
+    protected constructor(public rootLiteral: string, public description: string) {
     }
 
     public async execute(reader: StringReader): Promise<void> {
