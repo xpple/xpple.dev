@@ -3,7 +3,7 @@ import {CommandHandler} from "../command-handler.js";
 
 export class DiscordCommand extends Command {
 
-    public  constructor() {
+    public constructor() {
         super("discord", "Get the link to my Discord.");
     }
 
