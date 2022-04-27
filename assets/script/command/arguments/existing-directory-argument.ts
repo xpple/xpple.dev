@@ -16,6 +16,9 @@ export class ExistingDirectoryArgument implements ArgumentType<Directory> {
             if (reader.peek() === '~') {
                 reader.skip();
                 this.currentDirectory = FileManager.getRoot();
+                if (reader.canRead()) {
+                    reader.expect('/');
+                }
             }
         }
         while (reader.canRead()) {
