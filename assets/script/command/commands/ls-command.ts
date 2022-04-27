@@ -18,6 +18,7 @@ export class LsCommand extends Command {
             for (const fileName of directory.getFiles().keys()) {
                 this.sendFeedback(fileName);
             }
+            return;
         }
         throw new IllegalArgumentError("Directory does not exist.");
     }
