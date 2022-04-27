@@ -1,5 +1,5 @@
 import {File} from "./file.js";
-import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";
+import {IllegalArgumentError} from "../errors/illegal-argument-error.js";
 import {INode} from "./inode.js";
 
 export class Directory extends INode {

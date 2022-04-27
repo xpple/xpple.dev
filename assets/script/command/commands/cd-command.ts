@@ -1,5 +1,5 @@
 import {Command} from "../command.js";
-import {FileManager} from "../file_system/file-manager.js";
+import {FileManager} from "../../file_system/file-manager.js";
 import {StringReader} from "../string-reader.js";
 import {ExistingDirectoryArgument} from "../arguments/existing-directory-argument.js";
 import {IllegalArgumentError} from "../../errors/illegal-argument-error.js";

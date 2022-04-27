@@ -1,4 +1,4 @@
-import {FileManager} from "./command/file_system/file-manager.js";
+import {FileManager} from "./file_system/file-manager.js";
 
 export class WebStorageManager {
 

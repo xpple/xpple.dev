@@ -1,6 +1,6 @@
 import {Directory} from "./directory.js";
-import {CommandHandler} from "../command-handler.js";
-import {isString} from "../utils.js";
+import {CommandHandler} from "../command/command-handler.js";
+import {isString} from "../command/utils.js";
 import {File} from "./file.js";
 
 export class FileManager {

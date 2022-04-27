@@ -1,7 +1,7 @@
 import {ArgumentType} from "../argument-type.js";
 import {StringReader} from "../string-reader.js";
-import {FileManager} from "../file_system/file-manager.js";
-import {Directory} from "../file_system/directory.js";
+import {FileManager} from "../../file_system/file-manager.js";
+import {Directory} from "../../file_system/directory.js";
 
 export class ExistingDirectoryArgument implements ArgumentType<Directory> {
 
