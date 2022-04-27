@@ -1,6 +1,6 @@
 import {Command} from "../command.js";
-import {UnknownCommandError} from "../../errors/unknown-command-error.js";
 import {StringReader} from "../string-reader.js";
+import {CommandArgumentType} from "../arguments/command-argument-type.js";
 
 export class HelpCommand extends Command {
 
@@ -10,11 +10,7 @@ export class HelpCommand extends Command {
 
     public override async execute(reader: StringReader): Promise<void> {
         if (reader.canRead()) {
-            const commandString = reader.readString();
-            let command = Command.commands.get(commandString);
-            if (command === undefined) {
-                throw new UnknownCommandError(commandString);
-            }
+            const command = new CommandArgumentType().parse(reader);
             this.sendFeedback(command.description);
             return;
         }
@@ -22,6 +18,6 @@ export class HelpCommand extends Command {
         for (const command of Command.commands.values()) {
             this.sendFeedback(" - " + command.rootLiteral);
         }
-        this.sendFeedback("To get help for a specific command, type 'help &lt;command&gt;'.");
+        this.sendFeedback("To get help for a specific command, type 'help <command>'.");
     }
 }
