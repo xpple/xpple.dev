@@ -17,7 +17,7 @@ jobs:
             run: npm run build
 
         -   name: Remove files that shouldn't get pushed
-            run: rm -rf .git .gitignore node_modules package.json package-lock.json tsconfig.json .idea .github .vscode
+            run: rm -rf .git .gitignore node_modules package.json tsconfig.json .idea .github .vscode
 
         -   name: Publish directory
             uses: s0/git-publish-subdir-action@v2.5.1
