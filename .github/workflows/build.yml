@@ -25,9 +25,6 @@ jobs:
                 git config --local user.email "fred@xpple.dev"
                 git config --local user.name "xpple"
 
-        -   name: Change branch
-            run: git checkout -b dist
-
         -   name: Commit
             run: |
                 git add -A
