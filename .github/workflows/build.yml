@@ -34,7 +34,7 @@ jobs:
                 git commit -a -m "Update build branch"
 
         -   name: Remove unwanted files
-            run: rm -rf .github .idea .vscode node_modules .gitignore package.json tsconfig.json
+            run: rm -rf .github .idea .vscode node_modules .gitignore package.json package-lock.json tsconfig.json
 
         -   name: Publish
             uses: ad-m/github-push-action@master
