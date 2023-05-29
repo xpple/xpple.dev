@@ -28,7 +28,7 @@ jobs:
         -   name: Commit
             run: |
                 git add -A
-                git commit -a -m "Update build branch"
+                git commit -a -m "Update build branch" || echo "Nothing to update"
 
         -   name: Remove unwanted files
             run: rm -rf .github .idea .vscode node_modules .gitignore package.json package-lock.json tsconfig.json
