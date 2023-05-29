@@ -26,7 +26,7 @@ jobs:
                 git config --local user.name "xpple"
 
         -   name: Change branch
-            run: git checkout -b dist
+            run: git checkout dist
 
         -   name: Commit
             run: |
