@@ -18,9 +18,9 @@ jobs:
 
         -   name: Commit
             run: |
-                git checkout -b dist
                 git config --local user.email "fred@xpple.dev"
                 git config --local user.name "xpple"
+                git checkout -b dist
                 git add -A
                 git commit -a -m "Update build branch"
 
