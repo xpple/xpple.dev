@@ -12,3 +12,5 @@ package-lock.json
 
 # compile target
 *.js
+*.css
+*.css.map
