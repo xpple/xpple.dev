@@ -8,7 +8,7 @@ jobs:
         name: Build and push
         steps:
         -   name: Checkout git repository
-            uses: actions/checkout@v2
+            uses: actions/checkout@v3
 
         -   name: Install dependencies
             run: npm install
@@ -16,14 +16,18 @@ jobs:
         -   name: Build
             run: npm run build
 
-        -   name: Remove files that shouldn't get pushed
-            run: rm -rf .git .gitignore node_modules package.json tsconfig.json .idea .github .vscode
+        -   name: Commit
+            run: |
+                git config --local user.email "fred@xpple.dev"
+                git config --local user.name "xpple"
+                git commit -a -m "Update build branch"
 
-        -   name: Publish directory
-            uses: s0/git-publish-subdir-action@v2.5.1
-            env:
-                REPO: "self"
-                BRANCH: "dist"
-                FOLDER: "."
-                GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-                MESSAGE: "Update build branch"
+        -   name: Remove files that shouldn't get pushed
+            run: rm -rf .github .idea .vscode node_modules .gitignore package.json tsconfig.json
+
+        -   name: Publish
+            uses: ad-m/github-push-action@master
+            with:
+                force: true
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                branch: dist
