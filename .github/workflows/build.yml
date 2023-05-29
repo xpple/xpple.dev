@@ -21,6 +21,7 @@ jobs:
                 git checkout -b dist
                 git config --local user.email "fred@xpple.dev"
                 git config --local user.name "xpple"
+                git add -A
                 git commit -a -m "Update build branch"
 
         -   name: Remove files that shouldn't get pushed
