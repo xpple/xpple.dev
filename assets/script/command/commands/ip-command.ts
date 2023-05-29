@@ -1,5 +1,4 @@
 import {Command} from "../command.js";
-import {CommandHandler} from "../command-handler.js";
 
 export class IpCommand extends Command {
 
