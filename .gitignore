@@ -4,6 +4,7 @@
 *.ipr
 *.iws
 !.idea/compiler.xml
+!.idea/watcherTasks.xml
 
 # node
 node_modules
