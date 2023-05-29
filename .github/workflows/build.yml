@@ -16,15 +16,21 @@ jobs:
         -   name: Build
             run: npm run build
 
-        -   name: Commit
+        -   name: Config
             run: |
                 git config --local user.email "fred@xpple.dev"
                 git config --local user.name "xpple"
+
+        -   name: Change branch
+            run: |
                 git checkout -b dist
+
+        -   name: Commit
+            run: |
                 git add -A
                 git commit -a -m "Update build branch"
 
-        -   name: Remove files that shouldn't get pushed
+        -   name: Remove unwanted files
             run: rm -rf .github .idea .vscode node_modules .gitignore package.json tsconfig.json
 
         -   name: Publish
