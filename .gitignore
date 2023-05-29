@@ -1,8 +1,9 @@
 # idea
-.idea/
+.idea
 *.iml
 *.ipr
 *.iws
+!.idea/compiler.xml
 
 # node
 node_modules
