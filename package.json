@@ -1,8 +1,9 @@
 {
     "scripts": {
-        "build": "tsc -p tsconfig.json"
+        "build": "tsc -p tsconfig.json && sass assets/style"
     },
     "dependencies": {
-        "typescript": "^4.6.3"
+        "sass": "^1.62.1",
+        "typescript": "^5.0.4"
     }
 }
