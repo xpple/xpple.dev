@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hi! I'm xpple, aka Fred. Here's my Discord: @xpple">
+    <title>xpple.dev</title>
+
+    <link rel="stylesheet" href="../assets/style/fonts.css">
+    <link rel="stylesheet" href="../assets/style/normalize.css">
+    <link rel="stylesheet" href="../assets/style/blog.css">
+</head>
+<body>
+<main>
+<h1>Bypassing Method Restrictions in WebLab</h1>
+<p>It is recommended to read <em>Artificially Passing Spec Tests in WebLab (Part 1)</em> first!</p>
+<hr>
+<p>Some courses impose certain method restrictions in the development environment of WebLab. For example in a certain course, the following code </p>
+<pre><code class="language-java">getClass().getDeclaredMethod(&quot;test&quot;);
+</code></pre>
+<p>will result in:</p>
+<pre><code>We could not compile the code. See the compilation errors below:
+- line 1: It is not allowed to use &#39;getDeclaredMethod&#39; in your code
+</code></pre>
+<p>Similarly, all other reflective methods are blocked. This should prevent any reflective operations from being done, but it can be bypassed!</p>
+<h2>Bypassing the restrictions</h2>
+<p>Importantly, note that the errors one gets when trying to use a certain method are compilation errors, not runtime errors. This means that something like Java&#39;s security manager is not used (which is a good thing). So how does the check work? Well, if we write</p>
+<pre><code class="language-java">// getClass().getDeclaredMethod(&quot;test&quot;);
+</code></pre>
+<p>we actually get the exact same error. It seems a simple search is done for the method&#39;s name, and if found, compilation will fail. Immediately though, one&#39;s alarm bells should start ringing. It is almost never a good idea to prevent certain actions by searching for exact occurrences of the action that is to be restricted. In many cases, this can easily be bypassed. An initial idea may be to call the <code>getDeclaredMethod</code> method through reflection, but it requires reflection to get the <code>Method</code> instance of <code>Class#getDeclaredMethod</code>. To the rescue comes the method-handle API. For example, we can do:</p>
+<pre><code class="language-java">MethodHandles.Lookup lookup = MethodHandles.lookup();
+MethodHandle methodsHandle = lookup.findVirtual(Class.class, &quot;getDeclared&quot; + &quot;Methods&quot;, MethodType.methodType(Method[].class));
+</code></pre>
+<p>However, we get the message:</p>
+<pre><code>We could not compile the code. See the compilation errors below:
+- line 1: It is not allowed to use &#39;reflect&#39; in your code
+</code></pre>
+<p>So we also cannot import the <code>Method</code> type, or any reflective type for that matter, because those reside in the package <code>java.lang.reflect</code>. Instead of doing <code>Method[].class</code>, we can perhaps use <code>Class.forName</code> to get the class instance:</p>
+<pre><code class="language-java">Class&lt;?&gt; methodClass = Class.forName(&quot;java.lang.refl&quot; + &quot;ect.Method&quot;);
+MethodHandle methodsHandle = lookup.findVirtual(Class.class, &quot;getDeclared&quot; + &quot;Methods&quot;, MethodType.methodType(methodClass.arrayType()));
+</code></pre>
+<p>Sadly, we now get the error:</p>
+<pre><code>We could not compile the code. See the compilation errors below:
+- line 1: It is not allowed to use &#39;forName&#39; in your code
+</code></pre>
+<p>Well, the only logical next step is to get a method handle for <code>Class.forName</code> as well:</p>
+<pre><code class="language-java">MethodHandle nameHandle = lookup.findStatic(Class.class, &quot;for&quot; + &quot;Name&quot;, MethodType.methodType(Class.class, String.class));
+</code></pre>
+<p>This works. Putting it all together, we get the following code:</p>
+<pre><code class="language-java">MethodHandles.Lookup lookup = MethodHandles.lookup();
+MethodHandle nameHandle = lookup.findStatic(Class.class, &quot;for&quot; + &quot;Name&quot;, MethodType.methodType(Class.class, String.class));
+Class&lt;?&gt; methodClass = (Class&lt;?&gt;) nameHandle.invoke(&quot;java.lang.refl&quot; + &quot;ect.Method&quot;);
+MethodHandle methodsHandle = lookup.findVirtual(Class.class, &quot;getDeclared&quot; + &quot;Methods&quot;, MethodType.methodType(methodClass.arrayType()));
+Object[] methods = (Object[]) methodsHandle.invoke(getClass());
+for (Object method : methods) {
+    System.out.println(method);
+}
+</code></pre>
+<p>After this cat and mouse game, we were finally able to bypass the restrictions!</p>
+
+</main>
+</body>
+</html>
