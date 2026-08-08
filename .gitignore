@@ -14,3 +14,4 @@ package-lock.json
 *.js
 *.css
 *.css.map
+/blogs/*.html

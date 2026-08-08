@@ -1,0 +1,51 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    font-family: jetbrainsmono, monospace;
+    color: white;
+}
+
+body {
+    background-color: black;
+}
+
+main {
+    width: min(90ch, 100% - 4rem);
+    margin-inline: auto;
+}
+
+pre {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    margin: .5rem;
+    padding: .5rem;
+
+    background-color: #222;
+    border-radius: 0.15rem;
+}
+
+code:not(pre > code) {
+    background-color: #222;
+    border-radius: 0.15rem;
+    font-size: 0.9em;
+    padding: 0.15em 0.25em;
+}
+
+blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 1rem;
+    margin-left: 0;
+}
+
+img, svg, video {
+    max-width: 100%;
+    display: block;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: underline;
+    color: inherit;
+}
